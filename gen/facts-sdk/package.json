@@ -1,0 +1,25 @@
+{
+  "name": "@facts-kit/facts-sdk-v2",
+  "version": "0.0.26",
+  "description": "JS Implementation of the Facts Protocol",
+  "main": "main.js",
+  "types": "main.d.ts",
+  "type": "module",
+  "scripts": {
+    "test": "uvu test",
+    "build:types": "tsc",
+    "build:src": "esbuild src/main.js --platform=node --format=esm --bundle --outdir=dist",
+    "build": "rm -r dist; npm run build:types && npm run build:src && cp package.json dist/package.json",
+    "pub": "npm run build && (cd dist && npm publish --access public)"
+  },
+  "author": "jshaw-ar",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "20.4.0",
+    "esbuild": "0.18.11",
+    "typescript": "5.1.6",
+    "warp-contracts": "1.4.14",
+    "warp-contracts-plugin-deploy": "1.0.9"
+  },
+  "private": false
+}
