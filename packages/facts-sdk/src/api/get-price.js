@@ -1,6 +1,19 @@
-/* eslint-disable no-useless-escape */
 import Async, { Resolved, fromPromise } from '../common/hyper-async.js';
 import { viewState } from '../common/util.js';
+
+/**
+ * @typedef {Object} GetPriceOutput
+ * @property {Object} result
+ * @property {number} result.qty
+ * @property {number} result.price
+ * @property {number} result.fee
+ * @property {Object} result.owner
+ * @property {string} result.owner.addr
+ * @property {string} result.owner.position
+ * @property {string} result.position
+ * @property {string} result.factMarket
+ * @property {string} dre
+ */
 
 /**
  *
@@ -8,12 +21,20 @@ import { viewState } from '../common/util.js';
  * @author @jshaw-ar
  * @export
  * @param {*} warp
- * @return {*}
  */
 export function getPrice(warp) {
+  /**
+   * Async function that performs deployment.
+   *
+   * @param {Object} props - Deployment parameters
+   * @param {string} props.tx - Rebut transaction
+   * @param {'support' | 'oppose'} props.position - Position value
+   * @param {number} props.qty - the amount of tokens in the base unit
+   * @returns {Promise<GetPriceOutput>} - Promise with the result of getPrice
+   */
   return async ({ qty, tx, position }) =>
     Async.of(tx)
-      .chain((tx) =>
+      .chain((/** @type {string} */ tx) =>
         fromPromise(viewState)(
           tx,
           {
@@ -48,7 +69,7 @@ export function getPrice(warp) {
               position: position,
               qty: qty,
             },
-            'dre-2',
+            'dre-1',
             warp
           ),
         Resolved
@@ -96,11 +117,10 @@ export function getPrice(warp) {
         Resolved
       )
       .fork(
-        (error) => {
+        (/** @type {{ message: any; }} */ error) => {
           throw new Error(error?.message || error || 'An error occurred');
         },
-        (interaction) => {
-          return interaction.result;
-        }
+
+        ({ interaction, dre }) => ({ result: interaction.result, dre })
       );
 }
