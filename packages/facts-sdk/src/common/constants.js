@@ -5,7 +5,7 @@ export const FACT_MARKET_SRC = 'eIAyBgHH-H7Qzw9fj7Austj30QKPQn27eaakvpOUSR8';
  * @param {import("../api/deploy-fm").PermafactsTags} input
  * @return {Array<{name: string;value: string;}>} tags
  */
-export function getAns110TagsFromUser(input) {
+export const getAns110TagsFromUser = (input) => {
   const newTags = [];
   if (input.topics) {
     input?.topics?.forEach((/** @type {any} */ t) => {
@@ -21,7 +21,7 @@ export function getAns110TagsFromUser(input) {
     { name: 'Description', value: input.description },
     ...newTags,
   ];
-}
+};
 
 /**
  *
@@ -31,7 +31,7 @@ export function getAns110TagsFromUser(input) {
  * @param {string} [rebutTx]
  * @return {Array.<{name: string, value: string}>} tags
  */
-export function getFactsTags(rebutTx) {
+export const getFactsTags = (rebutTx) => {
   const factRebuts = rebutTx ? [{ name: 'Fact-Rebuts', value: rebutTx }] : [];
   return [
     {
@@ -44,4 +44,4 @@ export function getFactsTags(rebutTx) {
     { name: 'Protocol-Name', value: 'Facts' },
     ...factRebuts,
   ];
-}
+};
