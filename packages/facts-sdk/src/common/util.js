@@ -36,7 +36,7 @@ export const readState = async (tx, dre, warp) => {
  * @return {Promise<any>}
  */
 export const viewState = async (tx, input, dre, warp) => {
-  const interaction = warp
+  const interaction = await warp
     .contract(tx)
     .setEvaluationOptions({
       remoteStateSyncSource: `https://${dre}.warp.cc/contract`,
@@ -46,6 +46,6 @@ export const viewState = async (tx, input, dre, warp) => {
       unsafeClient: 'skip',
     })
     .viewState(input);
-  if ((await interaction).type === 'ok') return interaction;
+  if (interaction.type === 'ok') return { interaction, dre };
   throw new Error(`There was an error evaluating state using ${dre}.`);
 };
