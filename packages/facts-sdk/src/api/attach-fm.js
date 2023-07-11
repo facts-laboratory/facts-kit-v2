@@ -20,9 +20,9 @@ import Async, { fromPromise } from '../common/hyper-async.js';
  * Deploy function.
  *
  * @param {Object} options - Deployment options
- * @param {string} options.warp - Warp value
- * @param {string} options.signer - Signer value
- * @param {string} options.deployPlugin - Deploy plugin value
+ * @param {any} options.warp - Warp value
+ * @param {any} options.signer - Signer value
+ * @param {any} options.deployPlugin - Deploy plugin value
  * @param {'node' | 'browser'} options.env - Deploy plugin value
  * @returns {Function} - Async function that returns a Promise
  */

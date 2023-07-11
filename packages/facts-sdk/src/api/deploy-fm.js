@@ -20,9 +20,9 @@ import Async, { fromPromise } from '../common/hyper-async.js';
  * Deploy function.
  *
  * @param {Object} props - deploy props
- * @param {string} props.warp - Warp instance
- * @param {string} props.signer - Signer value
- * @param {string} props.deployPlugin - Deploy plugin value
+ * @param {any} props.warp - Warp instance
+ * @param {any} props.signer - Signer value
+ * @param {any} props.deployPlugin - Deploy plugin value
  * @param {'node' | 'browser'} props.env - Deploy plugin value
  */
 export function deploy({ warp, signer, deployPlugin, env }) {
