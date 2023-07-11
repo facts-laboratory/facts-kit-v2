@@ -172,7 +172,7 @@ const output = await deploy({
 });
 ```
 
-Returns: `tx` (the fact market contract id)
+Returns: `string` (the fact market contract id)
 
 ## Attach
 
@@ -200,4 +200,4 @@ const output = await attach({
 });
 ```
 
-Returns: `tx` (the fact market contract id)
+Returns: `string` (the fact market contract id)
