@@ -30,6 +30,24 @@ const output = await getPrice(warp)({
 });
 ```
 
+Returns
+
+```json
+{
+  "dre": "string",
+  "result": {
+    "qty": "number",
+    "price": "number",
+    "fee": "number",
+    "owner": {
+      "addr": "string",
+      "position": "string"
+    },
+    "position": "string",
+    "factMarket": "string"
+  }
+}
+```
 ## Get Supply
 
 Pass warp as a dependency.
@@ -39,6 +57,19 @@ const warp = WarpFactory.forMainnet();
 const output = await getSupply(warp)({
   tx: 'OwDhifPxKBKK1ArPMtjRrg4DjW3XcOpw0q3gBLWu3dY',
 });
+```
+
+Returns
+
+```json
+{
+  "dre": "string",
+  "result": {
+    "total": "number",
+    "supprt": "number",
+    "oppose": "number"
+  }
+}
 ```
 
 ## Get Balance
@@ -54,6 +85,23 @@ const output = await getBalance(warp)({
 });
 ```
 
+Returns
+
+```json
+{
+  "dre": "string",
+  "result": {
+    "target": "string",
+    "ticker": "string",
+    "balance": "number",
+    "balances": {
+      "support": "number",
+      "oppose": "number"
+    }
+  }
+}
+```
+
 ## Buy
 
 Pass `warp`, and `signer` as dependencies.
@@ -64,6 +112,26 @@ const tx = await buy({ warp, signer: new InjectedArweaveSigner(window.arweaveWal
   tx: 'OwDhifPxKBKK1ArPMtjRrg4DjW3XcOpw0q3gBLWu3dY',
   position: 'support',
 });
+```
+
+Returns
+
+```json
+{
+  "dre": "string",
+  "result": {
+    "qty": "number",
+    "price": "number",
+    "fee": "number",
+    "owner": {
+      "addr": "string",
+      "position": "string"
+    },
+    "position": "string",
+    "factMarket": "string"
+  },
+  "tx": "string" // the tx of the new fact market interaction
+}
 ```
 
 ## Sell
@@ -77,6 +145,8 @@ const tx = await sell({warp, signer: new InjectedArweaveSigner(window.arweaveWal
   position: 'support',
 });
 ```
+
+Returns: `string` (tx id of the new fact market interaction)
 
 ## Deploy
 
@@ -101,6 +171,8 @@ const output = await deploy({
   position: 'support',
 });
 ```
+
+Returns: `tx` (the fact market contract id)
 
 ## Attach
 
@@ -127,3 +199,5 @@ const output = await attach({
   attachToTx: 'RZlH3NT_rTu9CLXGGhGDjnfxbCOOWfCNcGK3-tEjE0U',
 });
 ```
+
+Returns: `tx` (the fact market contract id)
