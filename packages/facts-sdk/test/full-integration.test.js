@@ -7,8 +7,8 @@ import { buy } from '../src/api/buy.js';
 
 const test = suite('full-integration');
 
-test.skip('buy', async () => {});
+test('buy', async () => {});
 
-test.skip('sell', async () => {});
+test('sell', async () => {});
 
 test.run();
