@@ -104,7 +104,7 @@ export function getSellPrice(warp) {
           ),
         Resolved
       )
-      .map((res) => getResult({ res, position }))
+      .map((res) => getSupply({ res, position }))
       .map((supply) => getUAmount({ supply, position, qty }))
       .fork(
         (/** @type {{ message: any; }} */ error) => {
@@ -114,7 +114,7 @@ export function getSellPrice(warp) {
       );
 }
 
-const getResult = ({ res, position }) => {
+const getSupply = ({ res, position }) => {
   return position === 'support'
     ? res.interaction.result.support
     : res.interaction.result.oppose;
