@@ -7,7 +7,7 @@ import {
 import Async, { fromPromise } from '../common/hyper-async.js';
 
 /**
- * @typedef {Object} PermafactsTags
+ * @typedef {Object} FactMarketTags
  * @property {string[]} [topics] - Optional array of topics
  * @property {string} type - The type
  * @property {string} title - The title
@@ -32,9 +32,9 @@ export function deploy({ warp, signer, deployPlugin, env }) {
    * @param {Object} props - Deployment parameters
    * @param {string} [props.rebutTx] - Rebut transaction
    * @param {'support' | 'oppose'} props.position - Position value
-   * @param {PermafactsTags} props.tags - PermafactsTags object
+   * @param {FactMarketTags} props.tags - FactMarketTags object
    * @param {*} props.data - Data object
-   * @param {Array.<{name: string, value: string}>} [props.extraTags] - extra tags to attach to the transaction
+   * @param {Array.<{name: string, value: string | number}>} [props.extraTags] - extra tags to attach to the transaction
    * @returns {Promise<string>} - the tx id fo the fact market
    */
   return async ({ rebutTx, position, tags, data, extraTags }) => {
