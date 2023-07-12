@@ -18,8 +18,6 @@ export function buy({ warp, signer, env }) {
    * @param {string} props.tx - contract ID
    * @param {'support' | 'oppose'} props.position - Position value
    * @param {number} props.qty - the amount of tokens in the base unit
-   * @param {'node' | 'browser'} props.env - Deploy plugin value
-   *
    * @returns {Promise<{tx: string, result: {qty: number; price: number; fee: number; owner: { addr: string; position: string; }, position: string; factMarket: string}, dre: string}>} - Promise with the result of getPrice
    */
   return async ({ qty, tx, position }) => {
