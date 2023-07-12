@@ -3,11 +3,14 @@ import { allowU } from './allow.js';
 import { getPrice } from './get-price.js';
 
 /**
- * @author @jshaw-ar
- * @export
- * @param {{warp: any, signer: any}} input
+ * Buy function
+ *
+ * @param {Object} options - Deployment options
+ * @param {any} options.warp - Warp value
+ * @param {any} options.signer - Signer value
+ * @param {'node' | 'browser'} options.env - whether the app is running in node or the browser
  */
-export function buy({ warp, signer }) {
+export function buy({ warp, signer, env }) {
   /**
    * Buys position tokens
    *
@@ -15,16 +18,26 @@ export function buy({ warp, signer }) {
    * @param {string} props.tx - contract ID
    * @param {'support' | 'oppose'} props.position - Position value
    * @param {number} props.qty - the amount of tokens in the base unit
+   * @param {'node' | 'browser'} props.env - Deploy plugin value
+   *
    * @returns {Promise<{tx: string, result: {qty: number; price: number; fee: number; owner: { addr: string; position: string; }, position: string; factMarket: string}, dre: string}>} - Promise with the result of getPrice
    */
   return async ({ qty, tx, position }) => {
     return Async.of({ qty, tx, position, warp })
       .chain(fromPromise(getPriceWrapper))
       .chain(({ result, dre }) =>
-        fromPromise(allowU)(tx, result, dre, warp, signer)
+        fromPromise(allowU)(tx, result, dre, warp, signer, env)
       )
       .chain(({ result, allowTx, dre }) =>
-        fromPromise(factMarketPosition)(tx, allowTx, result, dre, warp, signer)
+        fromPromise(factMarketPosition)(
+          tx,
+          allowTx,
+          result,
+          dre,
+          warp,
+          signer,
+          env
+        )
       )
       .fork(
         (/** @type {{ message: any; }} */ error) => {
@@ -54,9 +67,21 @@ const getPriceWrapper = async ({ qty, tx, position, warp }) => {
  * @param {string} dre
  * @param {any} warp
  * @param {any} signer
+ * @param {'node' | 'browser'} env
  * @return {Promise<{tx: string, result: any, dre: string}>}
  */
-const factMarketPosition = async (tx, allowTx, result, dre, warp, signer) => {
+const factMarketPosition = async (
+  tx,
+  allowTx,
+  result,
+  dre,
+  warp,
+  signer,
+  env
+) => {
+  if (env === 'browser') {
+    await signer.setPublicKey();
+  }
   const interaction = await warp
     .contract(tx)
     .setEvaluationOptions({

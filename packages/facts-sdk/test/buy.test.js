@@ -13,7 +13,7 @@ const jwk = JSON.parse(
 
 test('buy', async () => {
   const warp = getWarp();
-  await buy({ warp, signer: jwk })({
+  await buy({ warp, signer: jwk, env: 'node' })({
     qty: 1,
     tx: 'OwDhifPxKBKK1ArPMtjRrg4DjW3XcOpw0q3gBLWu3dY',
     position: 'support',

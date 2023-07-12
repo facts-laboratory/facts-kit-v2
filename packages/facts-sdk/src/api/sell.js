@@ -1,14 +1,14 @@
 import Async, { Resolved, fromPromise } from '../common/hyper-async.js';
 
 /**
+ * Sell function
  *
- *
- * @author @jshaw-ar
- * @export
- * @param {*} warp
- * @return {*}
+ * @param {Object} options - Deployment options
+ * @param {any} options.warp - Warp value
+ * @param {any} options.signer - Signer value
+ * @param {'node' | 'browser'} options.env - whether the app is running in node or the browser
  */
-export function sell({ warp, signer }) {
+export function sell({ warp, signer, env }) {
   /**
    * Sell position tokens.
    *
@@ -21,7 +21,15 @@ export function sell({ warp, signer }) {
   return async ({ qty, tx, position }) => {
     return Async.of({ qty, tx, position, warp })
       .chain(({ qty, tx, position, warp }) =>
-        fromPromise(interact)({ qty, tx, position, warp, signer, dre: 'dre-3' })
+        fromPromise(interact)({
+          qty,
+          tx,
+          position,
+          warp,
+          signer,
+          dre: 'dre-3',
+          env,
+        })
       )
       .bichain(
         () =>
@@ -32,6 +40,7 @@ export function sell({ warp, signer }) {
             warp,
             signer,
             dre: 'dre-2',
+            env,
           }),
         Resolved
       )
@@ -44,6 +53,7 @@ export function sell({ warp, signer }) {
             warp,
             signer,
             dre: 'dre-1',
+            env,
           }),
         Resolved
       )
@@ -56,6 +66,7 @@ export function sell({ warp, signer }) {
             warp,
             signer,
             dre: 'dre-4',
+            env,
           }),
         Resolved
       )
@@ -68,6 +79,7 @@ export function sell({ warp, signer }) {
             warp,
             signer,
             dre: 'dre-5',
+            env,
           }),
         Resolved
       )
@@ -80,6 +92,7 @@ export function sell({ warp, signer }) {
             warp,
             signer,
             dre: 'dre-6',
+            env,
           }),
         Resolved
       )
@@ -92,7 +105,11 @@ export function sell({ warp, signer }) {
   };
 }
 
-const interact = async ({ qty, tx, position, warp, dre, signer }) => {
+const interact = async ({ qty, tx, position, warp, dre, signer, env }) => {
+  if (env === 'browser') {
+    await signer.setPublicKey();
+  }
+
   const interaction = await warp
     .contract(tx)
     .setEvaluationOptions({

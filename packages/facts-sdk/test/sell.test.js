@@ -18,6 +18,7 @@ test('sell', async () => {
     warp,
     signer:
       jwk /* <-- new InjectedArweaveSigner(window.arweaveWallet) see: https://docs.warp.cc/docs/sdk/advanced/plugins/signature */,
+    env: 'node',
   })({
     qty: 4,
     tx: 'OwDhifPxKBKK1ArPMtjRrg4DjW3XcOpw0q3gBLWu3dY',

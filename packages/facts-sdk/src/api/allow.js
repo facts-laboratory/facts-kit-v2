@@ -9,10 +9,16 @@ import { U_TX } from '../common/constants.js';
  * @param {string} dre
  * @param {any} warp
  * @param {any} signer
+ * @param {'node' | 'browser'} env
  * @return {Promise<{allowTx: string, result: any, dre: string}>}
  */
-export const allowU = async (tx, result, dre, warp, signer) => {
+export const allowU = async (tx, result, dre, warp, signer, env) => {
   const { price, fee } = result;
+
+  if (env === 'browser') {
+    await signer.setPublicKey();
+  }
+
   const interaction = await warp
     .contract(U_TX)
     .setEvaluationOptions({
