@@ -48,6 +48,27 @@ Returns
   }
 }
 ```
+## Get Sell Price
+
+Pass warp as a dependency.
+
+```js
+const warp = WarpFactory.forMainnet();
+const output = await getSellPrice(warp)({
+  qty: 2,
+  tx: 'OwDhifPxKBKK1ArPMtjRrg4DjW3XcOpw0q3gBLWu3dY',
+  position: 'support',
+});
+```
+
+Returns
+
+```json
+{
+  "u": "number",
+  "position": "string",
+}
+```
 ## Get Supply
 
 Pass warp as a dependency.
