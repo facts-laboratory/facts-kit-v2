@@ -14,8 +14,6 @@ test('get-sell-price2', async () => {
     position: 'support',
   });
 
-  console.log('Output', output);
-
   const { u, position } = output;
 
   assert.is(Number.isInteger(u), true);
