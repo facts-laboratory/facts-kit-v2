@@ -1,6 +1,6 @@
 {
   "name": "@facts-kit/facts-sdk-v2",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "JS Implementation of the Facts Protocol",
   "main": "main.js",
   "types": "main.d.ts",
