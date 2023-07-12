@@ -23,8 +23,7 @@ import Async, { fromPromise } from '../common/hyper-async.js';
  * @param {any} options.warp - Warp value
  * @param {any} options.signer - Signer value
  * @param {any} options.deployPlugin - Deploy plugin value
- * @param {'node' | 'browser'} options.env - Deploy plugin value
- * @returns {Function} - Async function that returns a Promise
+ * @param {'node' | 'browser'} options.env - whether the app is running in node or the browser
  */
 export function attach({ warp, signer, deployPlugin, env }) {
   /**
@@ -35,7 +34,7 @@ export function attach({ warp, signer, deployPlugin, env }) {
    * @param {'support' | 'oppose'} params.position - Position value
    * @param {FactMarketTags} params.tags - FactMarketTags object
    * @param {*} params.data - Data object
-   * @param {Array.<{name, value}>} [params.extraTags] - extra tags to attach to the transaction
+   * @param {Array.<{name: string, value: string | number}>} [params.extraTags] - extra tags to attach to the transaction
    * @param {string} [params.attachToTx] - the tx to attach the fact market to.
    * @returns {Promise<string>} - the tx id fo the fact market
    */

@@ -23,7 +23,7 @@ import Async, { fromPromise } from '../common/hyper-async.js';
  * @param {any} props.warp - Warp instance
  * @param {any} props.signer - Signer value
  * @param {any} props.deployPlugin - Deploy plugin value
- * @param {'node' | 'browser'} props.env - Deploy plugin value
+ * @param {'node' | 'browser'} props.env - whether the app is running in node or the browser
  */
 export function deploy({ warp, signer, deployPlugin, env }) {
   /**
