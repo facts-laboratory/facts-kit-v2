@@ -1,4 +1,8 @@
-import Async, { Resolved, fromPromise } from '../common/hyper-async.js';
+import Async, {
+  Rejected,
+  Resolved,
+  fromPromise,
+} from '../common/hyper-async.js';
 import { viewState } from '../common/util.js';
 
 /**
@@ -33,78 +37,9 @@ export function getSellPrice(warp) {
    * @returns {Promise<{u: number; position: 'support' | 'oppose'}>} - Promise with the result of getPrice
    */
   return async ({ tx, position, qty }) =>
-    Async.of(tx)
-      .chain((/** @type {string} */ tx) =>
-        fromPromise(viewState)(
-          tx,
-          {
-            function: 'get-supply',
-          },
-          'dre-3',
-          warp
-        )
-      )
-      .bichain(
-        () =>
-          fromPromise(viewState)(
-            tx,
-            {
-              function: 'get-supply',
-            },
-            'dre-2',
-            warp
-          ),
-        Resolved
-      )
-      .bichain(
-        () =>
-          fromPromise(viewState)(
-            tx,
-            {
-              function: 'get-supply',
-            },
-            'dre-1',
-            warp
-          ),
-        Resolved
-      )
-      .bichain(
-        () =>
-          fromPromise(viewState)(
-            tx,
-            {
-              function: 'get-supply',
-            },
-            'dre-4',
-            warp
-          ),
-        Resolved
-      )
-      .bichain(
-        () =>
-          fromPromise(viewState)(
-            tx,
-            {
-              function: 'get-supply',
-            },
-            'dre-6',
-            warp
-          ),
-        Resolved
-      )
-      .bichain(
-        () =>
-          fromPromise(viewState)(
-            tx,
-            {
-              function: 'get-supply',
-            },
-            'dre-5',
-            warp
-          ),
-        Resolved
-      )
-      .map((res) => getSupply({ res, position }))
+    Async.of({ tx, warp, position })
+      .chain(fromPromise(getSupply))
+      .chain((supply) => validateSupply({ supply, qty }))
       .map((supply) => getUAmount({ supply, position, qty }))
       .fork(
         (/** @type {{ message: any; }} */ error) => {
@@ -114,10 +49,100 @@ export function getSellPrice(warp) {
       );
 }
 
-const getSupply = ({ res, position }) => {
+/**
+ *
+ *
+ * @author @jshaw-ar
+ * @param {{ tx: string, warp: any, position: 'support' | 'oppose'; }} input
+ * @return {Promise<number>}
+ */
+const getSupply = async ({ tx, warp, position }) => {
+  return Async.of(tx)
+    .chain((/** @type {string} */ tx) =>
+      fromPromise(viewState)(
+        tx,
+        {
+          function: 'get-supply',
+        },
+        'dre-3',
+        warp
+      )
+    )
+    .bichain(
+      () =>
+        fromPromise(viewState)(
+          tx,
+          {
+            function: 'get-supply',
+          },
+          'dre-2',
+          warp
+        ),
+      Resolved
+    )
+    .bichain(
+      () =>
+        fromPromise(viewState)(
+          tx,
+          {
+            function: 'get-supply',
+          },
+          'dre-1',
+          warp
+        ),
+      Resolved
+    )
+    .bichain(
+      () =>
+        fromPromise(viewState)(
+          tx,
+          {
+            function: 'get-supply',
+          },
+          'dre-4',
+          warp
+        ),
+      Resolved
+    )
+    .bichain(
+      () =>
+        fromPromise(viewState)(
+          tx,
+          {
+            function: 'get-supply',
+          },
+          'dre-6',
+          warp
+        ),
+      Resolved
+    )
+    .bichain(
+      () =>
+        fromPromise(viewState)(
+          tx,
+          {
+            function: 'get-supply',
+          },
+          'dre-5',
+          warp
+        ),
+      Resolved
+    )
+    .chain((res) => getPosition({ res, position }))
+    .toPromise();
+};
+
+const getPosition = ({ res, position }) => {
   return position === 'support'
-    ? res.interaction.result.support
-    : res.interaction.result.oppose;
+    ? Resolved(res.interaction.result.support)
+    : Resolved(res.interaction.result.oppose);
+};
+
+const validateSupply = ({ supply, qty }) => {
+  if (supply < qty) {
+    return Rejected('Supply is less than quantity.');
+  }
+  return Resolved(supply);
 };
 
 const getUAmount = ({ position, supply, qty }) => {
