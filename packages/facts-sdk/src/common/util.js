@@ -49,3 +49,39 @@ export const viewState = async (tx, input, dre, warp) => {
   if (interaction.type === 'ok') return { interaction, dre };
   throw new Error(`There was an error evaluating state using ${dre}.`);
 };
+
+/**
+ * @typedef {Object} Transaction
+ * @property {Object} block - The block information.
+ * @property {number} block.timestamp - The timestamp of the block.
+ * @property {string} id - The ID of the object.
+ * @property {Object} owner - The owner information.
+ * @property {string} owner.address - The address of the owner.
+ * @property {Array} tags - An array of tags associated with the object.
+ * @property {Object} tags[].name - The name of the tag.
+ * @property {string} tags[].value - The value of the tag.
+ */
+
+/**
+ * Pulls the node from the edge of the gql query response.
+ *
+ * @author @jshaw-ar
+ * @param {any} edge
+ * @return {Transaction}  {Transaction}
+ */
+export function getNode({ node }) {
+  return node;
+}
+
+/**
+ *
+ *
+ * @author @jshaw-ar
+ * @export
+ * @param {*} res
+ * @return {*}
+ */
+export function getEdges(res) {
+  if (!res?.data?.transactions?.edges) throw new Error('no edges');
+  return res.data.transactions.edges;
+}
