@@ -8,8 +8,17 @@ import { getPrice } from './get-price.js';
  * @param {{warp: any, signer: any}} input
  */
 export function buy({ warp, signer }) {
-  return async ({ qty, tx, allowTx, position }) => {
-    return Async.of({ qty, tx, allowTx, position, warp })
+  /**
+   * Buys position tokens
+   *
+   * @param {Object} props - parameters
+   * @param {string} props.tx - contract ID
+   * @param {'support' | 'oppose'} props.position - Position value
+   * @param {number} props.qty - the amount of tokens in the base unit
+   * @returns {Promise<{tx: string, result: {qty: number; price: number; fee: number; owner: { addr: string; position: string; }, position: string; factMarket: string}, dre: string}>} - Promise with the result of getPrice
+   */
+  return async ({ qty, tx, position }) => {
+    return Async.of({ qty, tx, position, warp })
       .chain(fromPromise(getPriceWrapper))
       .chain(({ result, dre }) =>
         fromPromise(allowU)(tx, result, dre, warp, signer)

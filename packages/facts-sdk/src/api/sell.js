@@ -9,6 +9,15 @@ import Async, { Resolved, fromPromise } from '../common/hyper-async.js';
  * @return {*}
  */
 export function sell({ warp, signer }) {
+  /**
+   * Sell position tokens.
+   *
+   * @param {Object} props - parameters
+   * @param {string} props.tx - contract id
+   * @param {'support' | 'oppose'} props.position - Position value
+   * @param {number} props.qty - the amount of tokens in the base unit
+   * @returns {Promise<string>} - tx id of interaction
+   */
   return async ({ qty, tx, position }) => {
     return Async.of({ qty, tx, position, warp })
       .chain(({ qty, tx, position, warp }) =>
