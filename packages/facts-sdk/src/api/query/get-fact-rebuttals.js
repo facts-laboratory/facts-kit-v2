@@ -6,7 +6,7 @@ import { getEdges, getNode } from '../../common/util.js';
  * @author @jshaw-ar
  * @export
  * @param {string} tx
- * @return {Promise<import('../../common/util').Transaction>}
+ * @return {Promise<import('../../common/util').Transaction[]>}
  */
 export async function getFactRebuttals(
   tx
