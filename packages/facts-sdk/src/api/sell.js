@@ -19,59 +19,9 @@ export function sell({ warp, signer, env }) {
    * @returns {Promise<string>} - tx id of interaction
    */
   return async ({ qty, tx, position }) => {
-    return Async.of({ qty, tx, position, warp })
-      .chain(({ qty, tx, position, warp }) =>
-        fromPromise(interact)({
-          qty,
-          tx,
-          position,
-          warp,
-          signer,
-          dre: 'dre-3',
-          env,
-        })
-      )
-      .bichain(
-        () =>
-          fromPromise(interact)({
-            qty,
-            tx,
-            position,
-            warp,
-            signer,
-            dre: 'dre-2',
-            env,
-          }),
-        Resolved
-      )
-      .bichain(
-        () =>
-          fromPromise(interact)({
-            qty,
-            tx,
-            position,
-            warp,
-            signer,
-            dre: 'dre-1',
-            env,
-          }),
-        Resolved
-      )
-      .bichain(
-        () =>
-          fromPromise(interact)({
-            qty,
-            tx,
-            position,
-            warp,
-            signer,
-            dre: 'dre-4',
-            env,
-          }),
-        Resolved
-      )
-      .bichain(
-        () =>
+    return (
+      Async.of({ qty, tx, position, warp })
+        .chain(({ qty, tx, position, warp }) =>
           fromPromise(interact)({
             qty,
             tx,
@@ -80,28 +30,80 @@ export function sell({ warp, signer, env }) {
             signer,
             dre: 'dre-5',
             env,
-          }),
-        Resolved
-      )
-      .bichain(
-        () =>
-          fromPromise(interact)({
-            qty,
-            tx,
-            position,
-            warp,
-            signer,
-            dre: 'dre-6',
-            env,
-          }),
-        Resolved
-      )
-      .fork(
-        (/** @type {{ message: any; }} */ error) => {
-          throw new Error(error?.message || error || 'An error occurred');
-        },
-        (/** @type {string} */ output) => output
-      );
+          })
+        )
+        .bichain(
+          () =>
+            fromPromise(interact)({
+              qty,
+              tx,
+              position,
+              warp,
+              signer,
+              dre: 'dre-6',
+              env,
+            }),
+          Resolved
+        )
+        // .bichain(
+        //   () =>
+        //     fromPromise(interact)({
+        //       qty,
+        //       tx,
+        //       position,
+        //       warp,
+        //       signer,
+        //       dre: 'dre-1',
+        //       env,
+        //     }),
+        //   Resolved
+        // )
+        // .bichain(
+        //   () =>
+        //     fromPromise(interact)({
+        //       qty,
+        //       tx,
+        //       position,
+        //       warp,
+        //       signer,
+        //       dre: 'dre-4',
+        //       env,
+        //     }),
+        //   Resolved
+        // )
+        // .bichain(
+        //   () =>
+        //     fromPromise(interact)({
+        //       qty,
+        //       tx,
+        //       position,
+        //       warp,
+        //       signer,
+        //       dre: 'dre-5',
+        //       env,
+        //     }),
+        //   Resolved
+        // )
+        // .bichain(
+        //   () =>
+        //     fromPromise(interact)({
+        //       qty,
+        //       tx,
+        //       position,
+        //       warp,
+        //       signer,
+        //       dre: 'dre-6',
+        //       env,
+        //     }),
+        //   Resolved
+        // )
+        .fork(
+          (/** @type {{ message: any; }} */ error) => {
+            throw new Error(error?.message || error || 'An error occurred');
+          },
+          (/** @type {string} */ output) => output
+        )
+    );
   };
 }
 

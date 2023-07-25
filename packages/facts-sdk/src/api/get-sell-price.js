@@ -57,67 +57,9 @@ export function getSellPrice(warp) {
  * @return {Promise<number>}
  */
 const getSupply = async ({ tx, warp, position }) => {
-  return Async.of(tx)
-    .chain((/** @type {string} */ tx) =>
-      fromPromise(viewState)(
-        tx,
-        {
-          function: 'get-supply',
-        },
-        'dre-3',
-        warp
-      )
-    )
-    .bichain(
-      () =>
-        fromPromise(viewState)(
-          tx,
-          {
-            function: 'get-supply',
-          },
-          'dre-2',
-          warp
-        ),
-      Resolved
-    )
-    .bichain(
-      () =>
-        fromPromise(viewState)(
-          tx,
-          {
-            function: 'get-supply',
-          },
-          'dre-1',
-          warp
-        ),
-      Resolved
-    )
-    .bichain(
-      () =>
-        fromPromise(viewState)(
-          tx,
-          {
-            function: 'get-supply',
-          },
-          'dre-4',
-          warp
-        ),
-      Resolved
-    )
-    .bichain(
-      () =>
-        fromPromise(viewState)(
-          tx,
-          {
-            function: 'get-supply',
-          },
-          'dre-6',
-          warp
-        ),
-      Resolved
-    )
-    .bichain(
-      () =>
+  return (
+    Async.of(tx)
+      .chain((/** @type {string} */ tx) =>
         fromPromise(viewState)(
           tx,
           {
@@ -125,11 +67,71 @@ const getSupply = async ({ tx, warp, position }) => {
           },
           'dre-5',
           warp
-        ),
-      Resolved
-    )
-    .chain((res) => getPosition({ res, position }))
-    .toPromise();
+        )
+      )
+      .bichain(
+        () =>
+          fromPromise(viewState)(
+            tx,
+            {
+              function: 'get-supply',
+            },
+            'dre-5',
+            warp
+          ),
+        Resolved
+      )
+      // .bichain(
+      //   () =>
+      //     fromPromise(viewState)(
+      //       tx,
+      //       {
+      //         function: 'get-supply',
+      //       },
+      //       'dre-1',
+      //       warp
+      //     ),
+      //   Resolved
+      // )
+      // .bichain(
+      //   () =>
+      //     fromPromise(viewState)(
+      //       tx,
+      //       {
+      //         function: 'get-supply',
+      //       },
+      //       'dre-4',
+      //       warp
+      //     ),
+      //   Resolved
+      // )
+      // .bichain(
+      //   () =>
+      //     fromPromise(viewState)(
+      //       tx,
+      //       {
+      //         function: 'get-supply',
+      //       },
+      //       'dre-6',
+      //       warp
+      //     ),
+      //   Resolved
+      // )
+      // .bichain(
+      //   () =>
+      //     fromPromise(viewState)(
+      //       tx,
+      //       {
+      //         function: 'get-supply',
+      //       },
+      //       'dre-5',
+      //       warp
+      //     ),
+      //   Resolved
+      // )
+      .chain((res) => getPosition({ res, position }))
+      .toPromise()
+  );
 };
 
 const getPosition = ({ res, position }) => {

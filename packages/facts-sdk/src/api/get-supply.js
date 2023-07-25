@@ -33,45 +33,9 @@ export function getSupply(warp) {
           {
             function: 'get-supply',
           },
-          'dre-3',
+          'dre-5',
           warp
         )
-      )
-      .bichain(
-        () =>
-          fromPromise(viewState)(
-            tx,
-            {
-              function: 'get-supply',
-            },
-            'dre-2',
-            warp
-          ),
-        Resolved
-      )
-      .bichain(
-        () =>
-          fromPromise(viewState)(
-            tx,
-            {
-              function: 'get-supply',
-            },
-            'dre-1',
-            warp
-          ),
-        Resolved
-      )
-      .bichain(
-        () =>
-          fromPromise(viewState)(
-            tx,
-            {
-              function: 'get-supply',
-            },
-            'dre-4',
-            warp
-          ),
-        Resolved
       )
       .bichain(
         () =>
@@ -85,18 +49,54 @@ export function getSupply(warp) {
           ),
         Resolved
       )
-      .bichain(
-        () =>
-          fromPromise(viewState)(
-            tx,
-            {
-              function: 'get-supply',
-            },
-            'dre-5',
-            warp
-          ),
-        Resolved
-      )
+      // .bichain(
+      //   () =>
+      //     fromPromise(viewState)(
+      //       tx,
+      //       {
+      //         function: 'get-supply',
+      //       },
+      //       'dre-1',
+      //       warp
+      //     ),
+      //   Resolved
+      // )
+      // .bichain(
+      //   () =>
+      //     fromPromise(viewState)(
+      //       tx,
+      //       {
+      //         function: 'get-supply',
+      //       },
+      //       'dre-4',
+      //       warp
+      //     ),
+      //   Resolved
+      // )
+      // .bichain(
+      //   () =>
+      //     fromPromise(viewState)(
+      //       tx,
+      //       {
+      //         function: 'get-supply',
+      //       },
+      //       'dre-6',
+      //       warp
+      //     ),
+      //   Resolved
+      // )
+      // .bichain(
+      //   () =>
+      //     fromPromise(viewState)(
+      //       tx,
+      //       {
+      //         function: 'get-supply',
+      //       },
+      //       'dre-5',
+      //       warp
+      //     ),
+      //   Resolved
+      // )
       .fork(
         (error) => {
           throw new Error(error?.message || error || 'An error occurred');

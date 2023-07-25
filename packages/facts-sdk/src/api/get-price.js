@@ -42,51 +42,9 @@ export function getPrice(warp) {
             position: position,
             qty: qty,
           },
-          'dre-3',
+          'dre-5',
           warp
         )
-      )
-      .bichain(
-        () =>
-          fromPromise(viewState)(
-            tx,
-            {
-              function: 'get-price',
-              position: position,
-              qty: qty,
-            },
-            'dre-2',
-            warp
-          ),
-        Resolved
-      )
-      .bichain(
-        () =>
-          fromPromise(viewState)(
-            tx,
-            {
-              function: 'get-price',
-              position: position,
-              qty: qty,
-            },
-            'dre-1',
-            warp
-          ),
-        Resolved
-      )
-      .bichain(
-        () =>
-          fromPromise(viewState)(
-            tx,
-            {
-              function: 'get-price',
-              position: position,
-              qty: qty,
-            },
-            'dre-4',
-            warp
-          ),
-        Resolved
       )
       .bichain(
         () =>
@@ -102,20 +60,62 @@ export function getPrice(warp) {
           ),
         Resolved
       )
-      .bichain(
-        () =>
-          fromPromise(viewState)(
-            tx,
-            {
-              function: 'get-price',
-              position: position,
-              qty: qty,
-            },
-            'dre-5',
-            warp
-          ),
-        Resolved
-      )
+      // .bichain(
+      //   () =>
+      //     fromPromise(viewState)(
+      //       tx,
+      //       {
+      //         function: 'get-price',
+      //         position: position,
+      //         qty: qty,
+      //       },
+      //       'dre-1',
+      //       warp
+      //     ),
+      //   Resolved
+      // )
+      // .bichain(
+      //   () =>
+      //     fromPromise(viewState)(
+      //       tx,
+      //       {
+      //         function: 'get-price',
+      //         position: position,
+      //         qty: qty,
+      //       },
+      //       'dre-4',
+      //       warp
+      //     ),
+      //   Resolved
+      // )
+      // .bichain(
+      //   () =>
+      //     fromPromise(viewState)(
+      //       tx,
+      //       {
+      //         function: 'get-price',
+      //         position: position,
+      //         qty: qty,
+      //       },
+      //       'dre-6',
+      //       warp
+      //     ),
+      //   Resolved
+      // )
+      // .bichain(
+      //   () =>
+      //     fromPromise(viewState)(
+      //       tx,
+      //       {
+      //         function: 'get-price',
+      //         position: position,
+      //         qty: qty,
+      //       },
+      //       'dre-5',
+      //       warp
+      //     ),
+      //   Resolved
+      // )
       .fork(
         (/** @type {{ message: any; }} */ error) => {
           throw new Error(error?.message || error || 'An error occurred');
