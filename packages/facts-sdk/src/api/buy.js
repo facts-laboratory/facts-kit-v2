@@ -39,6 +39,7 @@ export function buy({ warp, signer, env }) {
       )
       .fork(
         (/** @type {{ message: any; }} */ error) => {
+          console.log('THE ERROR', error);
           throw new Error(error?.message || error || 'An error occurred');
         },
         (/** @type {any} */ output) => output
@@ -77,8 +78,12 @@ const factMarketPosition = async (
   signer,
   env
 ) => {
+  console.log('BUYING FACT MARKET');
   if (env === 'browser') {
+    console.log('SETTING PUBLIC KEY');
+
     await signer.setPublicKey();
+    console.log('SETTING PUBLIC KEY COMPLETE');
   }
   const interaction = await warp
     .contract(tx)
