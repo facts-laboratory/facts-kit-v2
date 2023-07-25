@@ -65,7 +65,7 @@ const getSupply = async ({ tx, warp, position }) => {
           {
             function: 'get-supply',
           },
-          'dre-5',
+          'dre-3',
           warp
         )
       )
@@ -76,7 +76,7 @@ const getSupply = async ({ tx, warp, position }) => {
             {
               function: 'get-supply',
             },
-            'dre-5',
+            'dre-4',
             warp
           ),
         Resolved

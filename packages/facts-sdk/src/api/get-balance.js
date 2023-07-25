@@ -50,63 +50,63 @@ export function getBalance(warp) {
               function: 'balance',
               target,
             },
-            'dre-2',
-            warp
-          ),
-        Resolved
-      )
-      .bichain(
-        () =>
-          fromPromise(viewState)(
-            tx,
-            {
-              function: 'balance',
-              target,
-            },
-            'dre-1',
-            warp
-          ),
-        Resolved
-      )
-      .bichain(
-        () =>
-          fromPromise(viewState)(
-            tx,
-            {
-              function: 'balance',
-              target,
-            },
             'dre-4',
             warp
           ),
         Resolved
       )
-      .bichain(
-        () =>
-          fromPromise(viewState)(
-            tx,
-            {
-              function: 'balance',
-              target,
-            },
-            'dre-6',
-            warp
-          ),
-        Resolved
-      )
-      .bichain(
-        () =>
-          fromPromise(viewState)(
-            tx,
-            {
-              function: 'balance',
-              target,
-            },
-            'dre-5',
-            warp
-          ),
-        Resolved
-      )
+      // .bichain(
+      //   () =>
+      //     fromPromise(viewState)(
+      //       tx,
+      //       {
+      //         function: 'balance',
+      //         target,
+      //       },
+      //       'dre-1',
+      //       warp
+      //     ),
+      //   Resolved
+      // )
+      // .bichain(
+      //   () =>
+      //     fromPromise(viewState)(
+      //       tx,
+      //       {
+      //         function: 'balance',
+      //         target,
+      //       },
+      //       'dre-4',
+      //       warp
+      //     ),
+      //   Resolved
+      // )
+      // .bichain(
+      //   () =>
+      //     fromPromise(viewState)(
+      //       tx,
+      //       {
+      //         function: 'balance',
+      //         target,
+      //       },
+      //       'dre-6',
+      //       warp
+      //     ),
+      //   Resolved
+      // )
+      // .bichain(
+      //   () =>
+      //     fromPromise(viewState)(
+      //       tx,
+      //       {
+      //         function: 'balance',
+      //         target,
+      //       },
+      //       'dre-5',
+      //       warp
+      //     ),
+      //   Resolved
+      // )
       .fork(
         (error) => {
           throw new Error(error?.message || error || 'An error occurred');

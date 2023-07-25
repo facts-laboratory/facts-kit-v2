@@ -28,7 +28,7 @@ export function sell({ warp, signer, env }) {
             position,
             warp,
             signer,
-            dre: 'dre-5',
+            dre: 'dre-3',
             env,
           })
         )
@@ -40,7 +40,7 @@ export function sell({ warp, signer, env }) {
               position,
               warp,
               signer,
-              dre: 'dre-6',
+              dre: 'dre-4',
               env,
             }),
           Resolved

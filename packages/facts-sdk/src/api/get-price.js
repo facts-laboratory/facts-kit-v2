@@ -42,7 +42,7 @@ export function getPrice(warp) {
             position: position,
             qty: qty,
           },
-          'dre-5',
+          'dre-3',
           warp
         )
       )
@@ -55,7 +55,7 @@ export function getPrice(warp) {
               position: position,
               qty: qty,
             },
-            'dre-6',
+            'dre-4',
             warp
           ),
         Resolved

@@ -33,7 +33,7 @@ export function getSupply(warp) {
           {
             function: 'get-supply',
           },
-          'dre-5',
+          'dre-3',
           warp
         )
       )
@@ -44,7 +44,7 @@ export function getSupply(warp) {
             {
               function: 'get-supply',
             },
-            'dre-6',
+            'dre-4',
             warp
           ),
         Resolved
