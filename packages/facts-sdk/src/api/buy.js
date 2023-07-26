@@ -8,9 +8,8 @@ import { getPrice } from './get-price.js';
  * @param {Object} options - Deployment options
  * @param {any} options.warp - Warp value
  * @param {any} options.signer - Signer value
- * @param {'node' | 'browser'} options.env - whether the app is running in node or the browser
  */
-export function buy({ warp, signer, env }) {
+export function buy({ warp, signer }) {
   /**
    * Buys position tokens
    *
@@ -24,22 +23,13 @@ export function buy({ warp, signer, env }) {
     return Async.of({ qty, tx, position, warp })
       .chain(fromPromise(getPriceWrapper))
       .chain(({ result, dre }) =>
-        fromPromise(allowU)(tx, result, dre, warp, signer, env)
+        fromPromise(allowU)(tx, result, dre, warp, signer)
       )
       .chain(({ result, allowTx, dre }) =>
-        fromPromise(factMarketPosition)(
-          tx,
-          allowTx,
-          result,
-          dre,
-          warp,
-          signer,
-          env
-        )
+        fromPromise(factMarketPosition)(tx, allowTx, result, dre, warp, signer)
       )
       .fork(
         (/** @type {{ message: any; }} */ error) => {
-          console.log('THE ERROR', error);
           throw new Error(error?.message || error || 'An error occurred');
         },
         (/** @type {any} */ output) => output
@@ -66,25 +56,9 @@ const getPriceWrapper = async ({ qty, tx, position, warp }) => {
  * @param {string} dre
  * @param {any} warp
  * @param {any} signer
- * @param {'node' | 'browser'} env
  * @return {Promise<{tx: string, result: any, dre: string}>}
  */
-const factMarketPosition = async (
-  tx,
-  allowTx,
-  result,
-  dre,
-  warp,
-  signer,
-  env
-) => {
-  console.log('BUYING FACT MARKET');
-  if (env === 'browser') {
-    console.log('SETTING PUBLIC KEY');
-
-    await signer.setPublicKey();
-    console.log('SETTING PUBLIC KEY COMPLETE');
-  }
+const factMarketPosition = async (tx, allowTx, result, dre, warp, signer) => {
   const interaction = await warp
     .contract(tx)
     .setEvaluationOptions({

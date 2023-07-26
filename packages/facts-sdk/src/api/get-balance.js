@@ -38,23 +38,23 @@ export function getBalance(warp) {
             function: 'balance',
             target,
           },
-          'dre-3',
+          'dre-4',
           warp
         )
       )
-      .bichain(
-        () =>
-          fromPromise(viewState)(
-            tx,
-            {
-              function: 'balance',
-              target,
-            },
-            'dre-4',
-            warp
-          ),
-        Resolved
-      )
+      // .bichain(
+      //   () =>
+      //     fromPromise(viewState)(
+      //       tx,
+      //       {
+      //         function: 'balance',
+      //         target,
+      //       },
+      //       'dre-6',
+      //       warp
+      //     ),
+      //   Resolved
+      // )
       // .bichain(
       //   () =>
       //     fromPromise(viewState)(

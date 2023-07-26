@@ -10,7 +10,8 @@
     "build:types": "tsc",
     "build:src": "esbuild src/main.js --platform=node --format=esm --bundle --outdir=dist",
     "build": "rm -r dist; npm run build:types && npm run build:src && cp package.json dist/package.json",
-    "pub": "npm run build && (cd dist && npm publish --access public)"
+    "pub": "npm run build && (cd dist && npm publish --access public)",
+    "perma-pub": ""
   },
   "author": "jshaw-ar",
   "license": "ISC",

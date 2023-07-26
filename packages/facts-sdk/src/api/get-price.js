@@ -42,24 +42,24 @@ export function getPrice(warp) {
             position: position,
             qty: qty,
           },
-          'dre-3',
+          'dre-4',
           warp
         )
       )
-      .bichain(
-        () =>
-          fromPromise(viewState)(
-            tx,
-            {
-              function: 'get-price',
-              position: position,
-              qty: qty,
-            },
-            'dre-4',
-            warp
-          ),
-        Resolved
-      )
+      // .bichain(
+      //   () =>
+      //     fromPromise(viewState)(
+      //       tx,
+      //       {
+      //         function: 'get-price',
+      //         position: position,
+      //         qty: qty,
+      //       },
+      //       'dre-6',
+      //       warp
+      //     ),
+      //   Resolved
+      // )
       // .bichain(
       //   () =>
       //     fromPromise(viewState)(

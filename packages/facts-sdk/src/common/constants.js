@@ -42,6 +42,7 @@ export const getFactsTags = (rebutTx) => {
     { name: 'Contract-Src', value: FACT_MARKET_SRC },
     { name: 'Content-Type', value: 'application/json' },
     { name: 'Protocol-Name', value: 'Facts' },
+    { name: 'Indexed-By', value: 'ucm' },
     ...factRebuts,
   ];
 };

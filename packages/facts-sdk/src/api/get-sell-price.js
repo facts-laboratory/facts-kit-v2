@@ -65,22 +65,22 @@ const getSupply = async ({ tx, warp, position }) => {
           {
             function: 'get-supply',
           },
-          'dre-3',
+          'dre-4',
           warp
         )
       )
-      .bichain(
-        () =>
-          fromPromise(viewState)(
-            tx,
-            {
-              function: 'get-supply',
-            },
-            'dre-4',
-            warp
-          ),
-        Resolved
-      )
+      // .bichain(
+      //   () =>
+      //     fromPromise(viewState)(
+      //       tx,
+      //       {
+      //         function: 'get-supply',
+      //       },
+      //       'dre-6',
+      //       warp
+      //     ),
+      //   Resolved
+      // )
       // .bichain(
       //   () =>
       //     fromPromise(viewState)(

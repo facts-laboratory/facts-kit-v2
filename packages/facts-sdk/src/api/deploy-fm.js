@@ -23,9 +23,8 @@ import Async, { fromPromise } from '../common/hyper-async.js';
  * @param {any} props.warp - Warp instance
  * @param {any} props.signer - Signer value
  * @param {any} props.deployPlugin - Deploy plugin value
- * @param {'node' | 'browser'} props.env - whether the app is running in node or the browser
  */
-export function deploy({ warp, signer, deployPlugin, env }) {
+export function deploy({ warp, signer, deployPlugin }) {
   /**
    * Async function that performs deployment.
    *
@@ -52,7 +51,6 @@ export function deploy({ warp, signer, deployPlugin, env }) {
           warp,
           signer,
           deployPlugin,
-          env,
         })
       )
       .fork(
@@ -71,11 +69,7 @@ const warpDeploy = async ({
   warp,
   signer,
   deployPlugin,
-  env,
 }) => {
-  if (env === 'browser') {
-    await signer.setPublicKey();
-  }
   const client = warp.use(deployPlugin);
   const opts = {
     evaluationManifest: {
