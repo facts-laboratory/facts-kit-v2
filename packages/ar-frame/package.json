@@ -1,0 +1,25 @@
+{
+  "name": "ar-frame",
+  "version": "0.0.2",
+  "description": "A container to pass data and a renderer through.",
+  "main": "app.js",
+  "module": "app.js",
+  "types": "App.d.ts",
+  "scripts": {
+    "test": "test",
+    "build:types": "rm -rf dist; tsc",
+    "build": "npm rum build:types && node ./scripts/build.js && cp package.json ./dist/",
+    "perma-pub": "npm run build && (cd dist && npm pack) && node ./scripts/perma-pub.mjs ./dist/ar-frame-0.0.2.tgz"
+  },
+  "author": "Justin Shaw",
+  "license": "ISC",
+  "dependencies": {
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "18.2.17",
+    "esbuild": "0.18.17",
+    "typescript": "5.1.6"
+  }
+}
