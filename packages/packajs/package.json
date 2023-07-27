@@ -1,0 +1,31 @@
+{
+  "name": "@facts-kit/packajs",
+  "version": "0.0.2",
+  "description": "A package manager for the permaweb.",
+  "main": "cli.js",
+  "types": "cli.d.ts",
+  "type": "module",
+  "bin": {
+    "packajs": "cli.js"
+  },
+  "scripts": {
+    "test": "uvu test",
+    "build:types": "tsc",
+    "build:src": "node ./scripts/build.js",
+    "build": "rm -r dist; npm run build:src && cp package.json dist/package.json",
+    "pub": "npm run build && (cd dist && npm publish --access public)",
+    "perma-pub": ""
+  },
+  "author": "jshaw-ar",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "20.4.0",
+    "esbuild": "0.18.11",
+    "typescript": "5.1.6"
+  },
+  "private": false,
+  "dependencies": {
+    "@bundlr-network/client": "0.11.9",
+    "commander": "11.0.0"
+  }
+}

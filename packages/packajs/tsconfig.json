@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "allowJs": true,
+    "checkJs": true,
+    "emitDeclarationOnly": true,
+    "declarationDir": "dist"
+  },
+  "include": ["./src"],
+  "exclude": ["./node_modules"]
+}
