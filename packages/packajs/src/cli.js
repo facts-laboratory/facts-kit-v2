@@ -15,7 +15,6 @@ program
   .description('Run an HTTP request to the specified URL using fetch.')
   .action(async (url, options) => {
     try {
-      console.log('Options', options);
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -34,13 +33,17 @@ program
 
 program
   .command('pubjs')
-  .option('-arns, --arns <arns>', 'The ARNS name to assign the tx to.')
+  .option(
+    '-arns, --arns <arns>',
+    '(COMING SOON) The ARNS name to assign the tx to.'
+  )
   .option(
     '-p, --path <path>',
-    'The path in the manifest. eg. https://<arns>.g8way.io/<path>'
+    '(COMING SOON) The path in the manifest. eg. https://<arns>.g8way.io/<path>'
   )
   .option('-t, --tag <tag...>', 'Additional tags.', [])
   .option('-f, --file <file>', 'Path to the file to deploy.')
+  .option('-w, --wallet <wallet>', 'Path to the arweave key file.')
   .description('Publish a file and optionally assign it an ARNS name.')
   .action(async (options) => {
     // if(!process.env.PATH_TO_WALLET) {
