@@ -15,7 +15,7 @@
     "build": "rm -r dist; npm run build:src && cp package.json dist/package.json",
     "pub": "npm run build && (cd dist && npm publish --access public)",
     "pub:file": "bundlr upload ${FILE} -h http://node2.bundlr.network -w ${PATH_TO_WALLET} -c arweave",
-    "perma-pub": "node src/cli.js pubjs -t Type=perma-package -t Title=PackaJS -t Description=\"Publish js packages to the permaweb. Forever.\" -t Read-Me=https://github.com/facts-laboratory/facts-kit-v2/blob/main/packages/packajs/README.md -t Repository=https://github.com/facts-laboratory/facts-kit-v2/tree/main/packages/packajs -t Render-With=jkPpggGUW-ofqKKYzG4Al8luFwNURoqXkpLFjqmiS58 -w $PATH_TO_WALLET"
+    "perma-pub": "node src/cli.js pubjs -t Type=perma-package -t Title=PackaJS -t Description=\"Publish js packages to the permaweb. Forever.\" -t Read-Me=https://github.com/facts-laboratory/facts-kit-v2/blob/main/packages/packajs/README.md -t Repository=https://github.com/facts-laboratory/facts-kit-v2/tree/main/packages/packajs -t Render-With=jkPpggGUW-ofqKKYzG4Al8luFwNURoqXkpLFjqmiS58 -w ${PATH_TO_WALLET}"
   },
   "author": "jshaw-ar",
   "license": "ISC",

@@ -24,6 +24,8 @@ You may need to run `(cd dist && npm pack)` before executing this script.
 
 ${PATH_TO_WALLET} references an environment variable that points to an arweave keyfile.  You can replace it with `/path/to/wallet.js` if you want to skip the environment variable part.
 
+_npm script_
+
 `packajs pubjs -t Type=perma-package -t Title=PackaJS -t Description=\"Publish js packages to the permaweb. Forever.\" -t Read-Me=https://github.com/facts-laboratory/facts-kit-v2/blob/main/packages/packajs/README.md -t Repository=https://github.com/facts-laboratory/facts-kit-v2/tree/main/packages/packajs -w ${PATH_TO_WALLET}`
 
 ## Help
