@@ -33,7 +33,9 @@ export function pubjs(bundlr) {
     Async.of(options)
       .chain(fromPromise(validateInput))
       .chain(fromPromise(getFile))
-      .chain((options) => fromPromise(publish)(bundlr, options))
+      .chain((/** @type {PublishOptions} */ options) =>
+        fromPromise(publish)(bundlr, options)
+      )
       .fork(
         (error) => {
           console.error(
