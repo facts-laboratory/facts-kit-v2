@@ -1,6 +1,6 @@
 # PackaJS
 
-A javascript implementation of the Permanent Package protocol.
+A javascript implementation of the [Permanent Package](https://specs.arweave.dev/?tx=kpBbb2yW-dtyVcd3TDgCfNWWZMBfgbSTfVLsydlVpdo) protocol.
 
 ![PackaJS](https://g8way.io/jkPpggGUW-ofqKKYzG4Al8luFwNURoqXkpLFjqmiS58)
 
