@@ -15,7 +15,6 @@ export const fetchTx = async (tx) =>
  * @return {*} value of tx or null
  */
 export async function fetchTxFromGateway(tx, host) {
-  console.log('FETCHING', tx, host);
   const result = await fetch(`https://${host}/${tx}`);
   if (result.ok) {
     return result.json();
@@ -33,6 +32,5 @@ function getHost() {
   const urlObj = new URL(window.location.href);
   const host = urlObj.host;
   if (host.includes('localhost')) return 'arweave.net';
-  console.log('HOST', host);
   return host;
 }
