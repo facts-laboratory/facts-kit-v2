@@ -11,7 +11,7 @@ There's a working example here:
 
 ## Install
 
-`npm i https://arweave.net/BQsLhkuZM_1ifG0EleDbf2_Uro0PMnyWK_q0PpJ-Jgs`
+`npm i https://arweave.net/YviFGLG5K8bTJF01nsbZbppOOfgu58ORkLqOR1wwuME`
 
 ## Use
 

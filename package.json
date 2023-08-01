@@ -5,7 +5,7 @@
   "scripts": {},
   "private": false,
   "dependencies": {
-    "@facts-kit/packajs": "0.0.2"
+    "@facts-kit/packajs": "0.0.4"
   },
   "devDependencies": {
     "nx": "16.5.0"

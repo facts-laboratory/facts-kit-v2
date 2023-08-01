@@ -1,6 +1,6 @@
 {
   "name": "@facts-kit/renderer",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A container to pass a tx (or data) and a compomnent through.  It returns the component with the data of the transaction data displayed.",
   "main": "app.js",
   "module": "app.js",
