@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { program } from 'commander';
 import NodeBundlr from '@bundlr-network/client/build/esm/node/bundlr';
+import { WarpFactory, defaultCacheOptions } from 'warp-contracts';
 import * as fs from 'fs';
 import { pubjs } from './api/pubjs.js';
 
@@ -49,13 +50,21 @@ program
     // if(!process.env.PATH_TO_WALLET) {
     //   console.error('Please set your arweave wallet file path to the environm')
     // }
+    const wallet = JSON.parse(
+      fs.readFileSync(process.env['PATH_TO_WALLET']).toString()
+    );
     const bundlr = new NodeBundlr(
       'http://node2.bundlr.network',
       'arweave',
-      JSON.parse(fs.readFileSync(process.env['PATH_TO_WALLET']).toString())
+      wallet
     );
 
-    return pubjs(bundlr)(options);
+    const warp = WarpFactory.forMainnet(
+      { ...defaultCacheOptions, inMemory: true },
+      true
+    );
+
+    return pubjs(bundlr, warp, wallet)(options);
   });
 
 program.parse(process.argv);

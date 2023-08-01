@@ -5,16 +5,9 @@ import Async, {
 } from '../common/hyper-async.js';
 import { promises } from 'fs';
 import NodeBundlr from '@bundlr-network/client/build/esm/node/bundlr';
+import { Warp } from 'warp-contracts';
 import chalk from 'chalk';
-
-import * as fs from 'fs';
-import { WarpFactory, defaultCacheOptions } from 'warp-contracts'
-const warp = WarpFactory.forMainnet({ ...defaultCacheOptions, inMemory: true, }, true);
-const REGISTRY = "bLAgYxAdX2Ry-nt6aH2ixgvJXbpsEYm28NgJgyqfs-U"; // This is the production ArNS Registry Smartweave Contract
-const ANT_SOURCE = "PEI1efYrsX08HUwvc6y-h6TSpsNlo2r6_fWL2_GdwhY"; // This is the ANT Smartweave Contract TX ID
-const nameToBuy = "test-domain-packajs"; // This is the name we want to buy from ArNS
-// wallet is a JSON file containing the wallet keyfile
-const wallet = JSON.parse(fs.readFileSync(process.env['PATH_TO_WALLET']).toString());
+import { ARNS_REGISTRY, nameToBuy } from '../common/constants.js';
 
 /**
  * @typedef {Object} PublishOptions
@@ -31,9 +24,12 @@ const wallet = JSON.parse(fs.readFileSync(process.env['PATH_TO_WALLET']).toStrin
  *
  * @author @jshaw-ar
  * @export
- * @param {*} bundlr
+ * @param {NodeBundlr} bundlr
+ * @param {Warp} warp
+ * @param {*} wallet
  */
-export function pubjs(bundlr) {
+export function pubjs(bundlr, warp, wallet) {
+  console.log(warp, wallet);
   /**
    * Publishes a file to the permaweb.
    * @param {PublishOptions} options The options for publishing the JavaScript file.
@@ -97,23 +93,26 @@ const validateArns = async (options) => {
   return options;
 };
 
-const checkExistingArns = async (options) => {
-  const registry = warp.pst(REGISTRY).connect(wallet);
+const checkExistingArns = async (options, { warp, wallet }) => {
+  const registry = warp.pst(ARNS_REGISTRY).connect(wallet);
 
   const currentState = await registry.readState();
   const currentStateString = JSON.stringify(currentState);
   const currentStateJSON = JSON.parse(currentStateString);
   if (currentStateJSON.records[nameToBuy] !== undefined) {
     console.log(
-      "This name %s is already taken and is not available for purchase.  Exiting.",
+      'This name %s is already taken and is not available for purchase.  Exiting.',
       nameToBuy
     );
     return;
   }
 
-  console.log("This name %s is available for purchase.  Buying now.", nameToBuy);
+  console.log(
+    'This name %s is available for purchase.  Buying now.',
+    nameToBuy
+  );
   return options;
-}
+};
 
 const validateTags = (tags) => {
   for (const t of tags) {
