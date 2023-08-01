@@ -9,6 +9,16 @@ import { pubjs } from './api/pubjs.js';
 import packageJson from '../package.json' assert { type: 'json' };
 program.version(packageJson.version);
 
+const wallet = JSON.parse(
+  fs.readFileSync(process.env['PATH_TO_WALLET']).toString()
+);
+const bundlr = new NodeBundlr('http://node2.bundlr.network', 'arweave', wallet);
+
+const warp = WarpFactory.forMainnet(
+  { ...defaultCacheOptions, inMemory: true },
+  true
+);
+
 program
   .command('fetch-url <url>')
   .option('-n, --name <name>', 'Your name.')
@@ -46,25 +56,21 @@ program
   .option('-f, --file <file>', 'Path to the file to deploy.')
   .option('-w, --wallet <wallet>', 'Path to the arweave key file.')
   .description('Publish a file and optionally assign it an ARNS name.')
-  .action(async (options) => {
-    // if(!process.env.PATH_TO_WALLET) {
-    //   console.error('Please set your arweave wallet file path to the environm')
-    // }
-    const wallet = JSON.parse(
-      fs.readFileSync(process.env['PATH_TO_WALLET']).toString()
-    );
-    const bundlr = new NodeBundlr(
-      'http://node2.bundlr.network',
-      'arweave',
-      wallet
-    );
+  .action(async (options) => pubjs(bundlr, warp, wallet)(options));
 
-    const warp = WarpFactory.forMainnet(
-      { ...defaultCacheOptions, inMemory: true },
-      true
-    );
+program
+  .command('arns <name>')
+  .option(
+    '-a, --available <available>',
+    'Checks if the arns name passed is available.'
+  )
+  .option('-r, --register <register>', 'Registers the ARNS name.')
+  .option('-l, --list <list>', 'Lists all domains owned by the current wallet.')
+  .description('Checks if an arns name is available and can register it.')
+  .action(async (name, options) => {
+    console.log('arns', name, options);
 
-    return pubjs(bundlr, warp, wallet)(options);
+    return;
   });
 
 program.parse(process.argv);
