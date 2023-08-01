@@ -1,3 +1,5 @@
+import { ARNS_REGISTRY } from './constants';
+
 /**
  *
  * @author @jshaw-ar
@@ -48,4 +50,15 @@ export const viewState = async (tx, input, dre, warp) => {
     .viewState(input);
   if ((await interaction).type === 'ok') return interaction;
   throw new Error(`There was an error evaluating state using ${dre}.`);
+};
+
+export const getArnsRegistryState = async () => {
+  const response = await fetch(
+    `https://dre-3.warp.cc/contract/?id=${ARNS_REGISTRY}`
+  );
+  if (!response.ok) {
+    throw new Error('Error fetching ARNS Registry state.');
+  }
+
+  return response.json();
 };
