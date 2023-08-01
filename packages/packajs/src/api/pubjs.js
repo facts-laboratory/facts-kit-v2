@@ -7,6 +7,15 @@ import { promises } from 'fs';
 import NodeBundlr from '@bundlr-network/client/build/esm/node/bundlr';
 import chalk from 'chalk';
 
+import * as fs from 'fs';
+import { WarpFactory, defaultCacheOptions } from 'warp-contracts'
+const warp = WarpFactory.forMainnet({ ...defaultCacheOptions, inMemory: true, }, true);
+const REGISTRY = "bLAgYxAdX2Ry-nt6aH2ixgvJXbpsEYm28NgJgyqfs-U"; // This is the production ArNS Registry Smartweave Contract
+const ANT_SOURCE = "PEI1efYrsX08HUwvc6y-h6TSpsNlo2r6_fWL2_GdwhY"; // This is the ANT Smartweave Contract TX ID
+const nameToBuy = "test-domain-packajs"; // This is the name we want to buy from ArNS
+// wallet is a JSON file containing the wallet keyfile
+const wallet = JSON.parse(fs.readFileSync(process.env['PATH_TO_WALLET']).toString());
+
 /**
  * @typedef {Object} PublishOptions
  * @property {string} arns - The ARNs (Amazon Resource Names) associated with the file.
@@ -87,6 +96,24 @@ const validateArns = async (options) => {
   // Make sure the wallet being used owns or controls the ARNS name being updated.
   return options;
 };
+
+const checkExistingArns = async (options) => {
+  const registry = warp.pst(REGISTRY).connect(wallet);
+
+  const currentState = await registry.readState();
+  const currentStateString = JSON.stringify(currentState);
+  const currentStateJSON = JSON.parse(currentStateString);
+  if (currentStateJSON.records[nameToBuy] !== undefined) {
+    console.log(
+      "This name %s is already taken and is not available for purchase.  Exiting.",
+      nameToBuy
+    );
+    return;
+  }
+
+  console.log("This name %s is available for purchase.  Buying now.", nameToBuy);
+  return options;
+}
 
 const validateTags = (tags) => {
   for (const t of tags) {
