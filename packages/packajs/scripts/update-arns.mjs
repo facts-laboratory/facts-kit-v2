@@ -44,7 +44,7 @@ const updateRecordTags = (contractId, tx) => {
     },
   ];
 };
-
+const tags = updateRecordTags(ANT, tx2);
 const bundlr = new NodeBundlr('http://node2.bundlr.network', 'arweave', jwk);
-const response = await bundlr.upload('packajs', updateRecordTags(ANT, tx2));
+const response = await bundlr.upload('packajs', { tags });
 console.log(`File uploaded ==> https://arweave.net/${response.id}`);
