@@ -25,8 +25,9 @@ const { ARNS_REGISTRY, DRE_URL, ANT_SOURCE } = require("../common/constants");
  *
  * @param {string} name The name of the ARNS
  * @param {NodeBundlr} bundlr The bundlr instance.
+ * @param {string} tx The transaction id of the resource.
  */
-export function ArNs(name, bundlr) {
+export function ArNs(name, bundlr, tx) {
     /**
     * check if the arns name is available then register it. 
     * @param {PublishOptions} options The options for publishing the JavaScript file. 
@@ -37,9 +38,9 @@ export function ArNs(name, bundlr) {
             .chain((/** @type {PublishOptions} */ options) =>
                 fromPromise(checkArnsExistence)(name, options)
             )
-            .chain((/** @type {PublishOptions} */ options) =>
-                // TODO: have to manage to get the tx id
-                fromPromise(registerArns)(name, bundlr, "kSGwKjy0hwpanOFEFweWw5MLZ1zCgLx4q1JaEUKk7DY", options)
+            .chain((/** @type {PublishOptions} */ options) => {
+                return fromPromise(registerArns)(name, bundlr, tx)
+            }
             )
             .fork(
                 (error) => {
@@ -49,7 +50,11 @@ export function ArNs(name, bundlr) {
                     process.exit();
                 },
                 (output) => {
-                    console.log("output", output);
+                    console.log(
+                        chalk.blue("\n\n===========output=============\n") ,
+                        chalk.green(output),
+                        chalk.blue("\n=============end==============\n\n") ,
+                    );
                     return output;
                 }
             );
@@ -89,14 +94,13 @@ const checkArnsExistence = async (name, options) => {
 /**
  * @param {string} name The name of the ARNS to register.
  * @param {NodeBundlr} bundlr The bundlr instance.
- * @param {PublishOptions} options The options for publishing the JavaScript file.
- * @param {string} tx The transaction id of the file.
+ * @param {string} tx The transaction id of the resource.
  */
 
-const registerArns = async (name, bundlr, tx, options) => {
-    const tags = getArnsTags(ANT_SOURCE, tx);
+const registerArns = async (name, bundlr, tx) => {
+    const tags = getArnsTags(ARNS_REGISTRY, tx);
     const response = await bundlr.upload(name, { tags });
-    console.log(`ArNs Registered ==> https://arweave.net/${response.id}`);
+    // console.log(`response ==> ${JSON.stringify(response)}`);
 
-    return options;
+    return `ArNs Registered ==> https://arweave.net/${response.id}`;
 }

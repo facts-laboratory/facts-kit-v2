@@ -68,7 +68,8 @@ program
   .option('-r, --register <register>', 'Registers the ARNS name.')
   .option('-l, --list <list>', 'Lists all domains owned by the current wallet.')
   .option('-w, --wallet <wallet>', 'Path to the arweave key file.')
+  .option('-tx, --tx <tx>', 'Resource transaction id.')
   .description('Checks if an arns name is available and can register it.')
-  .action(async (name, options) =>  ArNs(name, bundlr)(options));
+  .action(async (name, options) => ArNs(name, bundlr, options.tx)(options));
 
 program.parse(process.argv);
