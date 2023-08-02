@@ -5,9 +5,10 @@ import Async, {
 } from '../common/hyper-async.js';
 import { promises } from 'fs';
 import NodeBundlr from '@bundlr-network/client/build/esm/node/bundlr';
-import { Warp } from 'warp-contracts';
+// import { Warp } from 'warp-contracts';
 import chalk from 'chalk';
 import { ARNS_REGISTRY, nameToBuy } from '../common/constants.js';
+import { hasOptions, hasWallet, validateArns } from "../common/util.js"
 
 /**
  * @typedef {Object} PublishOptions
@@ -25,11 +26,11 @@ import { ARNS_REGISTRY, nameToBuy } from '../common/constants.js';
  * @author @jshaw-ar
  * @export
  * @param {NodeBundlr} bundlr
- * @param {Warp} warp
+ *  
  * @param {*} wallet
  */
-export function pubjs(bundlr, warp, wallet) {
-  console.log(warp, wallet);
+export function pubjs(bundlr, wallet) {
+  // console.log(warp, wallet);
   /**
    * Publishes a file to the permaweb.
    * @param {PublishOptions} options The options for publishing the JavaScript file.
@@ -71,48 +72,36 @@ const validateInput = async (options) => {
     .toPromise();
 };
 
-const hasOptions = (options) => {
-  if (!options) return Rejected('There were no options passed to the command.');
-  return Resolved(options);
-};
+// TODO: remove these func
 
-const hasWallet = (options) => {
-  if (!options?.wallet)
-    return Rejected(
-      'Please pass a wallet file to the command. eg. -w /path/to/wallet.json'
-    );
-  return Resolved(options);
-};
+// const validateArns = async (options) => {
+//   console.log(
+//     chalk.yellow('Validating arns: '),
+//     options.arns || '<missing arns option>'
+//   );
+//   // Make sure the wallet being used owns or controls the ARNS name being updated.
+//   return options;
+// };
+// const checkExistingArns = async (options, { warp, wallet }) => {
+//   const registry = warp.pst(ARNS_REGISTRY).connect(wallet);
 
-const validateArns = async (options) => {
-  console.log(
-    chalk.yellow('Validating arns: '),
-    options.arns || '<missing arns option>'
-  );
-  // Make sure the wallet being used owns or controls the ARNS name being updated.
-  return options;
-};
+//   const currentState = await registry.readState();
+//   const currentStateString = JSON.stringify(currentState);
+//   const currentStateJSON = JSON.parse(currentStateString);
+//   if (currentStateJSON.records[nameToBuy] !== undefined) {
+//     console.log(
+//       'This name %s is already taken and is not available for purchase.  Exiting.',
+//       nameToBuy
+//     );
+//     return;
+//   }
 
-const checkExistingArns = async (options, { warp, wallet }) => {
-  const registry = warp.pst(ARNS_REGISTRY).connect(wallet);
-
-  const currentState = await registry.readState();
-  const currentStateString = JSON.stringify(currentState);
-  const currentStateJSON = JSON.parse(currentStateString);
-  if (currentStateJSON.records[nameToBuy] !== undefined) {
-    console.log(
-      'This name %s is already taken and is not available for purchase.  Exiting.',
-      nameToBuy
-    );
-    return;
-  }
-
-  console.log(
-    'This name %s is available for purchase.  Buying now.',
-    nameToBuy
-  );
-  return options;
-};
+//   console.log(
+//     'This name %s is available for purchase.  Buying now.',
+//     nameToBuy
+//   );
+//   return options;
+// };
 
 const validateTags = (tags) => {
   for (const t of tags) {
