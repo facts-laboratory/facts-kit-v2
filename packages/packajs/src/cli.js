@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 import { program } from 'commander';
 import NodeBundlr from '@bundlr-network/client/build/esm/node/bundlr';
-import { WarpFactory, defaultCacheOptions } from 'warp-contracts';
+// import { WarpFactory, defaultCacheOptions } from 'warp-contracts';
 import * as fs from 'fs';
 import { pubjs } from './api/pubjs.js';
 
 // @ts-ignore
 import packageJson from '../package.json' assert { type: 'json' };
+import { ArNs } from './api/arns.js';
 program.version(packageJson.version);
 
 const wallet = JSON.parse(
@@ -14,10 +15,10 @@ const wallet = JSON.parse(
 );
 const bundlr = new NodeBundlr('http://node2.bundlr.network', 'arweave', wallet);
 
-const warp = WarpFactory.forMainnet(
-  { ...defaultCacheOptions, inMemory: true },
-  true
-);
+// const warp = WarpFactory.forMainnet(
+//   { ...defaultCacheOptions, inMemory: true },
+//   true
+// );
 
 program
   .command('fetch-url <url>')
@@ -56,7 +57,7 @@ program
   .option('-f, --file <file>', 'Path to the file to deploy.')
   .option('-w, --wallet <wallet>', 'Path to the arweave key file.')
   .description('Publish a file and optionally assign it an ARNS name.')
-  .action(async (options) => pubjs(bundlr, warp, wallet)(options));
+  .action(async (options) => pubjs(bundlr, wallet)(options));
 
 program
   .command('arns <name>')
@@ -66,11 +67,8 @@ program
   )
   .option('-r, --register <register>', 'Registers the ARNS name.')
   .option('-l, --list <list>', 'Lists all domains owned by the current wallet.')
+  .option('-w, --wallet <wallet>', 'Path to the arweave key file.')
   .description('Checks if an arns name is available and can register it.')
-  .action(async (name, options) => {
-    console.log('arns', name, options);
-
-    return;
-  });
+  .action(async (name, options) =>  ArNs(name, bundlr)(options));
 
 program.parse(process.argv);
