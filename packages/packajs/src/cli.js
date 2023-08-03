@@ -6,29 +6,19 @@ import { pubjs } from './api/pubjs.js';
 
 // @ts-ignore
 import packageJson from '../package.json' assert { type: 'json' };
+import { mkdir } from './common/util.js';
 program.version(packageJson.version);
 
+mkdir().catch(e => {
+  console.log("Error is", e)
+})
 program
   .command('fetch-url <url>')
   .option('-n, --name <name>', 'Your name.')
   .option('-t, --tag <tag...>', 'Additional tags.', [])
   .description('Run an HTTP request to the specified URL using fetch.')
   .action(async (url, options) => {
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      const data = await response.json();
-
-      if (options.name) {
-        console.log(`Hello ${options.name}, here are the results:`, data);
-      } else {
-        console.log('Results:', data);
-      }
-    } catch (err) {
-      console.error('Error:', err.message);
-    }
+    console.log(url, options)
   });
 
 program
