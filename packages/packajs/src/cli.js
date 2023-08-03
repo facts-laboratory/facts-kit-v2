@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 import { program } from 'commander';
 import NodeBundlr from '@bundlr-network/client/build/esm/node/bundlr';
-// import { WarpFactory, defaultCacheOptions } from 'warp-contracts';
 import * as fs from 'fs';
 import { pubjs } from './api/pubjs.js';
 import Arweave from 'arweave';
+import { WarpFactory, defaultCacheOptions } from 'warp-contracts';
+import { DeployPlugin } from 'warp-contracts-plugin-deploy';
 
 // @ts-ignore
 import packageJson from '../package.json' assert { type: 'json' };
@@ -24,10 +25,11 @@ const arweave = Arweave.init({
   protocol: "https",
 });
 
-// const warp = WarpFactory.forMainnet(
-//   { ...defaultCacheOptions, inMemory: true },
-//   true
-// );
+const warp = WarpFactory.forMainnet(
+  { ...defaultCacheOptions },
+  true
+).use(new DeployPlugin());
+
 
 program
   .command('fetch-url <url>')
@@ -80,9 +82,7 @@ program
   .option('-tx, --tx <tx>', 'Resource transaction id.')
   .description('Checks if an arns name is available and can register it.')
   .action(async (name, options) => {
-
-    const walletAddress = await arweave.wallets.jwkToAddress(wallet);
-    return ArNs(name, bundlr, options.tx, walletAddress, arweave)(options)
+    return ArNs(name, options.tx, wallet, warp, arweave)(options)
   });
 
 program.parse(process.argv);
