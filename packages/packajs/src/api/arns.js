@@ -14,10 +14,11 @@ import {
   hasWallet,
   validateArns,
 } from '../common/util.js';
+import { ARNS_REGISTRY, DRE_URL, ANT_SOURCE } from '../common/constants.js';
+
 import fetch from 'node-fetch';
 import NodeBundlr from '@bundlr-network/client/build/esm/node/bundlr';
 import * as Arweave from 'arweave';
-const { ARNS_REGISTRY, DRE_URL, ANT_SOURCE } = require('../common/constants');
 
 /**
  * @author ar://saif

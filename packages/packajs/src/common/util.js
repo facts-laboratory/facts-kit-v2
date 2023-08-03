@@ -1,6 +1,10 @@
 import chalk from 'chalk';
-import { ANT_SOURCE, ARNS_REGISTRY, MAX_ARNS_NAME_LENGTH } from './constants';
-import { Rejected, Resolved } from './hyper-async';
+import {
+  ANT_SOURCE,
+  ARNS_REGISTRY,
+  MAX_ARNS_NAME_LENGTH,
+} from './constants.js';
+import { Rejected, Resolved } from './hyper-async.js';
 import fetch from 'node-fetch';
 
 /**
@@ -102,13 +106,13 @@ export const validateArns = async (name, options) => {
   //   throw new Error("This subdomain is not allowed");
   // }
 
-  if (name === "www") {
-    console.log("www is not allowed");
-    throw new Error("This subdomain is not allowed");
+  if (name === 'www') {
+    console.log('www is not allowed');
+    throw new Error('This subdomain is not allowed');
   }
 
   if (name.length > MAX_ARNS_NAME_LENGTH) {
-    throw new Error("This subdomain is too long");
+    throw new Error('This subdomain is too long');
   }
 
   // Make sure the wallet being used owns or controls the ARNS name being updated.
@@ -151,7 +155,7 @@ export const getArnsTagsToUpdate = (contractId, tx) => {
       value: '0.5.3',
     },
   ];
-}
+};
 
 /**
  *
@@ -178,18 +182,16 @@ export const getArnsTagsToBuy = (tx, subDomain) => {
     },
     {
       name: 'Input',
-      value: JSON.stringify(
-        {
-          function: 'buyRecord',
-          name: subDomain,
-          contractTxId: tx,
-          years: 1,
-          type: 'lease',
-          auction: false,
-          qty: 1,
-          tierNumber: 1,
-        }
-      ),
+      value: JSON.stringify({
+        function: 'buyRecord',
+        name: subDomain,
+        contractTxId: tx,
+        years: 1,
+        type: 'lease',
+        auction: false,
+        qty: 1,
+        tierNumber: 1,
+      }),
     },
     {
       name: 'Signing-Client',
@@ -200,7 +202,7 @@ export const getArnsTagsToBuy = (tx, subDomain) => {
       value: '0.5.3',
     },
   ];
-}
+};
 
 /**
  *
@@ -214,23 +216,22 @@ export const getAntTags = (name, owner, transactionId) => {
     { name: 'App-Version', value: '0.3.0' },
     { name: 'Contract-Src', value: ANT_SOURCE },
     {
-      name: 'Init-State', value: JSON.stringify(
-        {
-          ticker: `ANT-${name.toUpperCase()}`,
-          name,
-          owner,
-          controller: owner,
-          evolve: null,
-          records: {
-            "@": {
-              transactionId,
-            },
+      name: 'Init-State',
+      value: JSON.stringify({
+        ticker: `ANT-${name.toUpperCase()}`,
+        name,
+        owner,
+        controller: owner,
+        evolve: null,
+        records: {
+          '@': {
+            transactionId,
           },
-          balances: {
-            [owner]: 1,
-          },
-        }
-      )
+        },
+        balances: {
+          [owner]: 1,
+        },
+      }),
     },
     {
       name: 'Signing-Client',
@@ -241,4 +242,4 @@ export const getAntTags = (name, owner, transactionId) => {
       value: '0.5.3',
     },
   ];
-}
+};
