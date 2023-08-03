@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import { ARNS_REGISTRY, MAX_ARNS_NAME_LENGTH } from './constants';
+import { ANT_SOURCE, ARNS_REGISTRY, MAX_ARNS_NAME_LENGTH } from './constants';
 import { Rejected, Resolved } from './hyper-async';
 import fetch from 'node-fetch';
 
@@ -111,11 +111,6 @@ export const validateArns = async (name, options) => {
     throw new Error("This subdomain is too long");
   }
 
-
-  // console.log(
-  //   chalk.yellow('Validating arns: '),
-  //   options.arns || '<missing arns option>'
-  // );
   // Make sure the wallet being used owns or controls the ARNS name being updated.
   return options;
 };
@@ -125,7 +120,7 @@ export const validateArns = async (name, options) => {
  * @param {string} contractId The contract ID of the ARNS Registry.
  * @param {string} tx The transaction ID of the ANT
  */
-export const getArnsTags = (contractId, tx) => {
+export const getArnsTagsToUpdate = (contractId, tx) => {
   return [
     {
       name: 'App-Name',
@@ -146,6 +141,96 @@ export const getArnsTags = (contractId, tx) => {
     {
       name: 'Input',
       value: `{"function":"setRecord","subDomain":"@","transactionId":"${tx}"}`,
+    },
+    {
+      name: 'Signing-Client',
+      value: 'ArConnect',
+    },
+    {
+      name: 'Signing-Client-Version',
+      value: '0.5.3',
+    },
+  ];
+}
+
+/**
+ *
+ * @param {string} tx The transaction ID of the ANT
+ * @param {string} subDomain The subdomain to buy.
+ */
+export const getArnsTagsToBuy = (tx, subDomain) => {
+  return [
+    {
+      name: 'App-Name',
+      value: 'SmartWeaveAction',
+    },
+    {
+      name: 'App-Version',
+      value: '0.3.0',
+    },
+    {
+      name: 'SDK',
+      value: 'Warp',
+    },
+    {
+      name: 'Contract-Src',
+      value: ARNS_REGISTRY,
+    },
+    {
+      name: 'Input',
+      value: JSON.stringify(
+        {
+          function: 'buyRecord',
+          name: subDomain,
+          contractTxId: tx,
+          years: 1,
+          type: 'lease',
+          auction: false,
+          qty: 1,
+          tierNumber: 1,
+        }
+      ),
+    },
+    {
+      name: 'Signing-Client',
+      value: 'ArConnect',
+    },
+    {
+      name: 'Signing-Client-Version',
+      value: '0.5.3',
+    },
+  ];
+}
+
+/**
+ *
+ * @param {string} name The name of the ANT to register.
+ * @param {string} owner The owner of the ANT.
+ * @param {string} transactionId The transaction ID of the ANT.
+ */
+export const getAntTags = (name, owner, transactionId) => {
+  return [
+    { name: 'App-Name', value: 'SmartWeaveContract' },
+    { name: 'App-Version', value: '0.3.0' },
+    { name: 'Contract-Src', value: ANT_SOURCE },
+    {
+      name: 'Init-State', value: JSON.stringify(
+        {
+          ticker: `ANT-${name.toUpperCase()}`,
+          name,
+          owner,
+          controller: owner,
+          evolve: null,
+          records: {
+            "@": {
+              transactionId,
+            },
+          },
+          balances: {
+            [owner]: 1,
+          },
+        }
+      )
     },
     {
       name: 'Signing-Client',

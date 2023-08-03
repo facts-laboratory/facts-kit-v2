@@ -4,6 +4,7 @@ import NodeBundlr from '@bundlr-network/client/build/esm/node/bundlr';
 // import { WarpFactory, defaultCacheOptions } from 'warp-contracts';
 import * as fs from 'fs';
 import { pubjs } from './api/pubjs.js';
+import Arweave from 'arweave';
 
 // @ts-ignore
 import packageJson from '../package.json' assert { type: 'json' };
@@ -14,6 +15,14 @@ const wallet = JSON.parse(
   fs.readFileSync(process.env['PATH_TO_WALLET']).toString()
 );
 const bundlr = new NodeBundlr('http://node2.bundlr.network', 'arweave', wallet);
+
+  // ~~ Initialize Arweave ~~
+  const arweave = Arweave.init({
+    host: "arweave.net",
+    timeout: 600000,
+    port: 443,
+    protocol: "https",
+  });
 
 // const warp = WarpFactory.forMainnet(
 //   { ...defaultCacheOptions, inMemory: true },
@@ -70,6 +79,10 @@ program
   .option('-w, --wallet <wallet>', 'Path to the arweave key file.')
   .option('-tx, --tx <tx>', 'Resource transaction id.')
   .description('Checks if an arns name is available and can register it.')
-  .action(async (name, options) => ArNs(name, bundlr, options.tx)(options));
+  .action(async (name, options) => {
+
+    const walletAddress = await arweave.wallets.jwkToAddress(wallet);
+    return ArNs(name, bundlr, options.tx, walletAddress)(options)
+  });
 
 program.parse(process.argv);
