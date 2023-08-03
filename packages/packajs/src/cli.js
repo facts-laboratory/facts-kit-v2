@@ -16,13 +16,13 @@ const wallet = JSON.parse(
 );
 const bundlr = new NodeBundlr('http://node2.bundlr.network', 'arweave', wallet);
 
-  // ~~ Initialize Arweave ~~
-  const arweave = Arweave.init({
-    host: "arweave.net",
-    timeout: 600000,
-    port: 443,
-    protocol: "https",
-  });
+// ~~ Initialize Arweave ~~
+const arweave = Arweave.init({
+  host: "arweave.net",
+  timeout: 600000,
+  port: 443,
+  protocol: "https",
+});
 
 // const warp = WarpFactory.forMainnet(
 //   { ...defaultCacheOptions, inMemory: true },
@@ -82,7 +82,7 @@ program
   .action(async (name, options) => {
 
     const walletAddress = await arweave.wallets.jwkToAddress(wallet);
-    return ArNs(name, bundlr, options.tx, walletAddress)(options)
+    return ArNs(name, bundlr, options.tx, walletAddress, arweave)(options)
   });
 
 program.parse(process.argv);

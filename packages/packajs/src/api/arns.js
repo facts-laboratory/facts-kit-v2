@@ -9,7 +9,8 @@ import Async, { fromPromise } from '../common/hyper-async.js';
 import { getAntTags, getArnsTagsToBuy, getArnsTagsToUpdate, hasOptions, hasWallet, validateArns } from '../common/util.js';
 import fetch from 'node-fetch';
 import NodeBundlr from '@bundlr-network/client/build/esm/node/bundlr';
-const { ARNS_REGISTRY, DRE_URL } = require("../common/constants");
+import * as Arweave from 'arweave';
+const { ARNS_REGISTRY, DRE_URL, ANT_SOURCE } = require("../common/constants");
 
 
 
@@ -28,8 +29,9 @@ const { ARNS_REGISTRY, DRE_URL } = require("../common/constants");
  * @param {NodeBundlr} bundlr The bundlr instance.
  * @param {string} tx The transaction id of the resource.
  * @param {string} walletAddress The wallet of the user.
+ * @param {Arweave} arweave The arweave instance.
  */
-export function ArNs(name, bundlr, tx, walletAddress) {
+export function ArNs(name, bundlr, tx, walletAddress, arweave) {
     /**
     * check if the arns name is available then register it. 
     * @param {PublishOptions} options The options for publishing the JavaScript file. 
@@ -41,7 +43,7 @@ export function ArNs(name, bundlr, tx, walletAddress) {
                 fromPromise(checkArnsExistence)(name, options)
             )
             .chain((/** @type {PublishOptions} */ options) => {
-                return fromPromise(registerNewArnsName)(name, bundlr, tx, walletAddress)
+                return fromPromise(registerNewArnsName)(name, bundlr, tx, walletAddress, arweave)
             }
             )
             .fork(
@@ -112,19 +114,20 @@ const updateArnsRecord = async (name, bundlr, tx) => {
  * @param {NodeBundlr} bundlr The bundlr instance.
  * @param {string} tx The transaction id of the resource.
  * @param {string} walletAddress The wallet of the user.
+ * @param {Arweave} arweave The arweave instance.
  */
-const registerNewArnsName = async (name, bundlr, tx, walletAddress) => {
+const registerNewArnsName = async (name, bundlr, tx, walletAddress, arweave) => {
     // TODO: Check balance for the purchase
 
     // get ant
-    const ant = await getAntForArns(name, bundlr, tx, walletAddress);
-    
+    const ant = await getAntForArns(name, bundlr, tx, walletAddress, arweave);
+
     // buyName
     const tags = getArnsTagsToBuy(ant.id, name);
     const response = await bundlr.upload(name, { tags });
     console.log(`\nregisterNewArnsName response ==> ${JSON.stringify(response)}`);
 
-    return `ArNs Registered ==> https://arweave.net/${response.id}`;
+    return `ArNs Registered ==> https://arweave.net/${"response.id"}`;
 }
 
 /**
@@ -132,14 +135,27 @@ const registerNewArnsName = async (name, bundlr, tx, walletAddress) => {
  * @param {NodeBundlr} bundlr The bundlr instance.
  * @param {string} tx The transaction id of the resource.
  * @param {string} walletAddress The wallet of the user.
+ * @param {Arweave} arweave The arweave instance.
  */
-const getAntForArns = async (name, bundlr, tx, walletAddress) => {
+const getAntForArns = async (name, bundlr, tx, walletAddress, arweave) => {
     const getTags = getAntTags(name, walletAddress, tx);
-    const response = await bundlr.upload(name, {
+    const bundlrResponse = await bundlr.upload(name, {
         tags: getTags
     })
 
-    console.log(`\ngetAntForArns response ==> ${JSON.stringify(response)}`);
+    console.log(`\nbundlrResponse ==> ${JSON.stringify(bundlrResponse)}`);
+
+    const response = await fetch("https://gateway.warp.cc/gateway/contracts/register", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        },
+        body: JSON.stringify({ contractId: bundlrResponse.id, bundlrNode: "node2" }),
+    })
+
+    const output = await response.json();
+    console.log(`\n warp response ==> ${output}`);
 
     return response;
 }
