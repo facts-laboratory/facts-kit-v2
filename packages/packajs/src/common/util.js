@@ -1,51 +1,19 @@
-/**
- *
- * @author @jshaw-ar
- * @export
- * @todo turn this into an async pipe so it's easier to read
- * @param {string} tx
- * @return {Promise<any>}
- */
-export const readState = async (tx, dre, warp) => {
+import { promises } from 'fs';
+
+async function readFileExample() {
   try {
-    const read = await warp
-      .contract(tx)
-      .connect('use_wallet')
-      .setEvaluationOptions({
-        internalWrites: true,
-        unsafeClient: 'skip',
-        remoteStateSyncSource: `https://${dre}.warp.cc/contract`,
-        remoteStateSyncEnabled: true,
-        allowBigInt: true,
-      })
-      .readState();
+    // Provide the file path as the first argument to readFile
+    const filePath = './';
 
-    return read.cachedValue.state;
+    // The `readFile` method returns a promise, so we can use `await` to wait for the result.
+    const fileContent = await promises.readFile(filePath, {
+      encoding: 'utf-8',
+    });
+
+    // Do something with the file content
+    console.log(fileContent);
   } catch (error) {
-    throw new Error(`There was an error evaluating state using ${dre}.`);
+    // Handle any errors that might occur during file reading
+    console.error('Error reading the file:', error.message);
   }
-};
-
-/**
- *
- * @author @jshaw-ar
- * @export
- * @param {string} tx
- * @param {any} input
- * @param {string} dre
- * @return {Promise<any>}
- */
-export const viewState = async (tx, input, dre, warp) => {
-  const interaction = warp
-    .contract(tx)
-    .setEvaluationOptions({
-      remoteStateSyncSource: `https://${dre}.warp.cc/contract`,
-      remoteStateSyncEnabled: true,
-      internalWrites: true,
-      allowBigInt: true,
-      unsafeClient: 'skip',
-    })
-    .viewState(input);
-  if ((await interaction).type === 'ok') return interaction;
-  throw new Error(`There was an error evaluating state using ${dre}.`);
-};
+}
