@@ -12,10 +12,8 @@ const options = {
 };
 
 build(options)
-  .then((o) => {
-    console.log('Build completed successfully!', o);
+  .catch((e) => {
+    console.log(e);
+    return process.exit(1);
   })
-  .catch((error) => {
-    console.error('Build failed:', error.message);
-    process.exit(1);
-  });
+  .finally(() => console.log('Success.'));
