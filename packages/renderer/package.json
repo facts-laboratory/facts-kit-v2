@@ -1,7 +1,7 @@
 {
-  "name": "ar-frame",
-  "version": "0.0.2",
-  "description": "A container to pass data and a renderer through.",
+  "name": "@facts-kit/renderer",
+  "version": "0.0.5",
+  "description": "A container to pass a tx (or data) and a compomnent through.  It returns the component with the data of the transaction data displayed.",
   "main": "app.js",
   "module": "app.js",
   "types": "App.d.ts",
@@ -18,7 +18,7 @@
     "react-dom": "18.2.0"
   },
   "devDependencies": {
-    "@facts-kit/packajs": "https://arweave.net/kWXhgcqXu_DKL5kpQ7TlM3qM6YUx9Acoc-fnFFRWJC4",
+    "@facts-kit/packajs": "https://arweave.net/hnNArrNrudkFJTJ6AGnyDrsmD04JZIbdlEMrLNumUCQ",
     "@types/react": "18.2.17",
     "esbuild": "0.18.17",
     "typescript": "5.1.6"
