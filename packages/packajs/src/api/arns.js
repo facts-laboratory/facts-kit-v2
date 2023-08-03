@@ -7,12 +7,12 @@
 import chalk from 'chalk';
 import Async, { fromPromise } from '../common/hyper-async.js';
 import {
-  getAntTags,
-  getArnsTagsToBuy,
-  getArnsTagsToUpdate,
-  hasOptions,
-  hasWallet,
-  validateArns,
+    getAntTags,
+    getArnsTagsToBuy,
+    getArnsTagsToUpdate,
+    hasOptions,
+    hasWallet,
+    validateArns,
 } from '../common/util.js';
 import { ARNS_REGISTRY, DRE_URL, ANT_SOURCE } from '../common/constants.js';
 
@@ -36,49 +36,49 @@ import * as Arweave from 'arweave';
  * @param {Arweave} arweave The arweave instance.
  */
 export function ArNs(name, bundlr, tx, walletAddress, arweave) {
-  /**
-   * check if the arns name is available then register it.
-   * @param {PublishOptions} options The options for publishing the JavaScript file.
-   */
-  return async (options) =>
-    Async.of(options)
-      .chain(fromPromise(validateInput))
-      .chain((/** @type {PublishOptions} */ options) =>
-        fromPromise(checkArnsExistence)(name, options)
-      )
-      .chain((/** @type {PublishOptions} */ options) => {
-        return fromPromise(registerNewArnsName)(
-          name,
-          bundlr,
-          tx,
-          walletAddress,
-          arweave
-        );
-      })
-      .fork(
-        (error) => {
-          console.error(
-            chalk.red(error?.message || error || 'An error occurred.')
-          );
-          process.exit();
-        },
-        (output) => {
-          console.log(
-            chalk.blue('\n\n===========output=============\n'),
-            chalk.green(output),
-            chalk.blue('\n=============end==============\n\n')
-          );
-          return output;
-        }
-      );
+    /**
+     * check if the arns name is available then register it.
+     * @param {PublishOptions} options The options for publishing the JavaScript file.
+     */
+    return async (options) =>
+        Async.of(options)
+            .chain(fromPromise(validateInput))
+            .chain((/** @type {PublishOptions} */ options) =>
+                fromPromise(checkArnsExistence)(name, options)
+            )
+            .chain((/** @type {PublishOptions} */ options) => {
+                return fromPromise(registerNewArnsName)(
+                    name,
+                    bundlr,
+                    tx,
+                    walletAddress,
+                    arweave
+                );
+            })
+            .fork(
+                (error) => {
+                    console.error(
+                        chalk.red(error?.message || error || 'An error occurred.')
+                    );
+                    process.exit();
+                },
+                (output) => {
+                    console.log(
+                        chalk.blue('\n\n===========output=============\n'),
+                        chalk.green(output),
+                        chalk.blue('\n=============end==============\n\n')
+                    );
+                    return output;
+                }
+            );
 }
 
 const validateInput = async (options) => {
-  return Async.of(options)
-    .chain(hasOptions)
-    .chain(hasWallet)
-    .chain(fromPromise(validateArns))
-    .toPromise();
+    return Async.of(options)
+        .chain(hasOptions)
+        .chain(hasWallet)
+        .chain(fromPromise(validateArns))
+        .toPromise();
 };
 
 /**
@@ -86,19 +86,19 @@ const validateInput = async (options) => {
  * @param {PublishOptions} options The options for publishing the JavaScript file.
  */
 const checkArnsExistence = async (name, options) => {
-  const response = await fetch(`${DRE_URL}/contract/?id=${ARNS_REGISTRY}`);
-  if (!response.ok) {
-    throw new Error('Error fetching ARNS Registry state.');
-  }
-  const results = await response.json();
+    const response = await fetch(`${DRE_URL}/contract/?id=${ARNS_REGISTRY}`);
+    if (!response.ok) {
+        throw new Error('Error fetching ARNS Registry state.');
+    }
+    const results = await response.json();
 
-  if (results.state.records[name]) {
-    throw new Error('ArNS name already exists');
-  }
+    if (results.state.records[name]) {
+        throw new Error('ArNS name already exists');
+    }
 
-  console.log('Available to register:- ', name);
+    console.log('Available to register:- ', name);
 
-  return options;
+    return options;
 };
 
 /**
@@ -108,11 +108,11 @@ const checkArnsExistence = async (name, options) => {
  */
 
 const updateArnsRecord = async (name, bundlr, tx) => {
-  const tags = getArnsTagsToUpdate(ARNS_REGISTRY, tx);
-  const response = await bundlr.upload(name, { tags });
-  // console.log(`response ==> ${JSON.stringify(response)}`);
+    const tags = getArnsTagsToUpdate(ARNS_REGISTRY, tx);
+    const response = await bundlr.upload(name, { tags });
+    // console.log(`response ==> ${JSON.stringify(response)}`);
 
-  return `ArNs Registered ==> https://arweave.net/${response.id}`;
+    return `ArNs Registered ==> https://arweave.net/${response.id}`;
 };
 
 /**
@@ -123,23 +123,27 @@ const updateArnsRecord = async (name, bundlr, tx) => {
  * @param {Arweave} arweave The arweave instance.
  */
 const registerNewArnsName = async (
-  name,
-  bundlr,
-  tx,
-  walletAddress,
-  arweave
+    name,
+    bundlr,
+    tx,
+    walletAddress,
+    arweave
 ) => {
-  // TODO: Check balance for the purchase
+    // TODO: Check balance for the purchase
 
-  // get ant
-  const ant = await getAntForArns(name, bundlr, tx, walletAddress, arweave);
+    // get ant
+    const ant = await getAntForArns(name, bundlr, tx, walletAddress, arweave);
 
-  // buyName
-  const tags = getArnsTagsToBuy(ant.id, name); // SAIF, getAntForArns doesnt return ant.id, you need to return the bundlr response I think
-  const response = await bundlr.upload(name, { tags });
-  console.log(`\nregisterNewArnsName response ==> ${JSON.stringify(response)}`);
+    // buyName
+    if (ant) {
+        const tags = getArnsTagsToBuy(ant.id, name); // SAIF, getAntForArns doesnt return ant.id, you need to return the bundlr response I think
+        const response = await bundlr.upload(name, { tags });
+        console.log(`\nregisterNewArnsName response ==> ${JSON.stringify(response)}`);
 
-  return `ArNs Registered ==> https://arweave.net/${'response.id'}`;
+        return `ArNs Registered ==> https://arweave.net/${response.id}`;
+    } else {
+        return `Failed to register ArNs ${name}`
+    }
 };
 
 /**
@@ -150,30 +154,31 @@ const registerNewArnsName = async (
  * @param {Arweave} arweave The arweave instance.
  */
 const getAntForArns = async (name, bundlr, tx, walletAddress, arweave) => {
-  const getTags = getAntTags(name, walletAddress, tx);
-  const bundlrResponse = await bundlr.upload(name, {
-    tags: getTags,
-  });
+    const getTags = getAntTags(name, walletAddress, tx);
+    const bundlrResponse = await bundlr.upload(name, {
+        tags: getTags,
+    });
 
-  console.log(`\nbundlrResponse ==> ${JSON.stringify(bundlrResponse)}`);
+    console.log(`\nbundlrResponse ==> ${JSON.stringify(bundlrResponse)}`);
 
-  const response = await fetch(
-    'https://gateway.warp.cc/gateway/contracts/register',
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-      body: JSON.stringify({
-        contractId: bundlrResponse.id,
-        bundlrNode: 'node2',
-      }),
+    const response = await fetch(
+        'https://gateway.warp.cc/gateway/contracts/register',
+        {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+            },
+            body: JSON.stringify({
+                contractId: bundlrResponse.id,
+                bundlrNode: 'node2',
+            }),
+        }
+    );
+    if (!response.ok) {
+        console.log('Wrap contract registration failed.', JSON.stringify(response));
+        return;
+    } else {
+        return bundlrResponse;
     }
-  );
-  if (!response.ok) {
-    console.log('BAD');
-  }
-
-  return response;
 };
