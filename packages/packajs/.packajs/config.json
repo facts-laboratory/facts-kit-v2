@@ -1,12 +1,8 @@
 {
   "manifest": true,
-  "ant": {
-    "tx": "string",
-    "name": "string",
-    "undername": "string"
-  },
+  "ant": {},
   "pack": false,
-  "readme": "tx",
+  "readme": "kSGwKjy0hwpanOFEFweWw5MLZ1zCgLx4q1JaEUKk7DY",
   "manual": {
     "manifest": "The path manifest for the deployment. (see: https://specs.arweave.dev/#/view/lXLd0OPwo-dJLB_Amz5jgIeDhiOkjXuM3-r0H_aiNj0)",
     "ant": "The tx ID of the ARNS ANT. (see: https://ar.io/arns-pilot/)",
