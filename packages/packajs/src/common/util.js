@@ -20,24 +20,57 @@ export async function readFile() {
   }
 }
 
-export async function mkdir() {
-  try {
-    const newDirectoryName = '.packajs';
-
-    // Provide the desired directory path as the first argument to mkdir
-    const newDirectoryPath = path.join(__dirname, newDirectoryName);
-
-    // The `mkdir` method returns a promise, so we can use `await` to wait for the result.
-    await promises.mkdir(newDirectoryPath);
-
-    console.log('Directory created successfully!');
-  } catch (error) {
-    if (error.code === 'EEXIST') {
-      console.log('EXISTS!');
-      return;
-    } else {
-      console.log(chalk.red(error?.message || 'An error occurred.'));
-      process.exit();
-    }
-  }
+/**
+ *
+ *
+ * @author @jshaw-ar
+ * @param {typeof import('fs').promises} promises
+ */
+export async function getConfig(promises) {
+  return promises.readFile('./.packajs/config.json', 'utf-8');
 }
+
+/**
+ *
+ *
+ * @author @jshaw-ar
+ * @param {typeof import('fs').promises} promises
+ */
+export async function getManifest(promises) {
+  return promises.readFile('./.packajs/manifest.json', 'utf-8');
+}
+
+/**
+ *
+ *
+ * @author @jshaw-ar
+ * @param {typeof import('fs').promises} promises
+ */
+export async function getConfigAndManifest(promises) {
+  return {
+    config: await getConfig(promises),
+    manifest: await getManifest(promises),
+  };
+}
+
+// export async function mkdir() {
+//   try {
+//     const newDirectoryName = '.packajs';
+
+//     // Provide the desired directory path as the first argument to mkdir
+//     const newDirectoryPath = path.join(__dirname, newDirectoryName);
+
+//     // The `mkdir` method returns a promise, so we can use `await` to wait for the result.
+//     await promises.mkdir(newDirectoryPath);
+
+//     console.log('Directory created successfully!');
+//   } catch (error) {
+//     if (error.code === 'EEXIST') {
+//       console.log('EXISTS!');
+//       return;
+//     } else {
+//       console.log(chalk.red(error?.message || 'An error occurred.'));
+//       process.exit();
+//     }
+//   }
+// }
