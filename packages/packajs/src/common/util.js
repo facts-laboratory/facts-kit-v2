@@ -1,77 +1,31 @@
-import {
-  MAX_ARNS_NAME_LENGTH,
-} from './constants.js';
+import chalk from 'chalk';
+import { promises } from 'fs';
+// import * as path from 'path';
 import { Rejected, Resolved } from './hyper-async.js';
 
-/**
- * @typedef {Object} PublishOptions
- */
-
-/**
- *
- * @author @jshaw-ar
- * @export
- * @todo turn this into an async pipe so it's easier to read
- * @param {string} tx
- * @return {Promise<any>}
- */
-export const readState = async (tx, dre, warp) => {
+export async function readFile() {
   try {
-    const read = await warp
-      .contract(tx)
-      .connect('use_wallet')
-      .setEvaluationOptions({
-        internalWrites: true,
-        unsafeClient: 'skip',
-        remoteStateSyncSource: `https://${dre}.warp.cc/contract`,
-        remoteStateSyncEnabled: true,
-        allowBigInt: true,
-      })
-      .readState();
+    // Provide the file path as the first argument to readFile
+    const filePath = './.packajs/manifest.json';
 
-    return read.cachedValue.state;
+    // The `readFile` method returns a promise, so we can use `await` to wait for the result.
+    const fileContent = await promises.readFile(filePath, {
+      encoding: 'utf-8',
+    });
+
+    // Do something with the file content
+    console.log('CONTENTS', fileContent);
   } catch (error) {
-    throw new Error(`There was an error evaluating state using ${dre}.`);
+    // Handle any errors that might occur during file reading
+    console.error('Error reading the file:', error.message);
   }
-};
+}
 
-/**
- *
- * @author @jshaw-ar
- * @export
- * @param {string} tx
- * @param {any} input
- * @param {string} dre
- * @return {Promise<any>}
- */
-export const viewState = async (tx, input, dre, warp) => {
-  const interaction = warp
-    .contract(tx)
-    .setEvaluationOptions({
-      remoteStateSyncSource: `https://${dre}.warp.cc/contract`,
-      remoteStateSyncEnabled: true,
-      internalWrites: true,
-      allowBigInt: true,
-      unsafeClient: 'skip',
-    })
-    .viewState(input);
-  if ((await interaction).type === 'ok') return interaction;
-  throw new Error(`There was an error evaluating state using ${dre}.`);
-};
-
-/**
- *
- * @param {PublishOptions} options
- */
 export const hasOptions = (options) => {
   if (!options) return Rejected('There were no options passed to the command.');
   return Resolved(options);
 };
 
-/**
- *
- * @param {PublishOptions} options
- */
 export const hasWallet = (options) => {
   if (!options?.wallet)
     return Rejected(
@@ -80,26 +34,66 @@ export const hasWallet = (options) => {
   return Resolved(options);
 };
 
-/**
- *
- * @param {string} name
- * @param {PublishOptions} options
- */
-export const validateArns = async (name, options) => {
-  // if (!/^(?:[a-zA-Z0-9])+[a-zA-Z0-9-]*(?:[a-zA-Z0-9])$/.test(name)) {
-  //   console.log("bad combination of characters");
-  //   throw new Error("This subdomain is not allowed");
-  // }
-
-  if (name === 'www') {
-    console.log('www is not allowed');
-    throw new Error('This subdomain is not allowed');
-  }
-
-  if (name.length > MAX_ARNS_NAME_LENGTH) {
-    throw new Error('This subdomain is too long');
-  }
-
+export const validateArns = async (options) => {
+  console.log(
+    chalk.yellow('Validating arns: '),
+    options.arns || '<missing arns option>'
+  );
   // Make sure the wallet being used owns or controls the ARNS name being updated.
   return options;
 };
+
+/**
+ *
+ *
+ * @author @jshaw-ar
+ * @param {typeof import('fs').promises} promises
+ */
+export async function getConfig(promises) {
+  return promises.readFile('./.packajs/config.json', 'utf-8');
+}
+
+/**
+ *
+ *
+ * @author @jshaw-ar
+ * @param {typeof import('fs').promises} promises
+ */
+export async function getManifest(promises) {
+  return promises.readFile('./.packajs/manifest.json', 'utf-8');
+}
+
+/**
+ *
+ *
+ * @author @jshaw-ar
+ * @param {typeof import('fs').promises} promises
+ */
+export async function getConfigAndManifest(promises) {
+  return {
+    config: await getConfig(promises),
+    manifest: await getManifest(promises),
+  };
+}
+
+// export async function mkdir() {
+//   try {
+//     const newDirectoryName = '.packajs';
+
+//     // Provide the desired directory path as the first argument to mkdir
+//     const newDirectoryPath = path.join(__dirname, newDirectoryName);
+
+//     // The `mkdir` method returns a promise, so we can use `await` to wait for the result.
+//     await promises.mkdir(newDirectoryPath);
+
+//     console.log('Directory created successfully!');
+//   } catch (error) {
+//     if (error.code === 'EEXIST') {
+//       console.log('EXISTS!');
+//       return;
+//     } else {
+//       console.log(chalk.red(error?.message || 'An error occurred.'));
+//       process.exit();
+//     }
+//   }
+// }

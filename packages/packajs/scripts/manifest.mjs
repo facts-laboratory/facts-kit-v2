@@ -24,33 +24,33 @@ fetch(url)
 //   fs.readFileSync(process.env['PATH_TO_WALLET']).toString()
 // );
 
-// const tags = [
-//   { name: 'Content-Type', value: 'application/x.arweave-manifest+json' },
-// ];
+const tags = [
+  { name: 'Content-Type', value: 'application/x.arweave-manifest+json' },
+];
 
-// const bundlr = new NodeBundlr('http://node2.bundlr.network', 'arweave', jwk);
-// const response = await bundlr.upload(
-//   JSON.stringify({
-//     manifest: 'arweave/paths',
-//     version: '0.1.0',
-//     index: {
-//       path: 'readme',
-//     },
-//     paths: {
-//       readme: {
-//         id: 'kSGwKjy0hwpanOFEFweWw5MLZ1zCgLx4q1JaEUKk7DY',
-//       },
-//       '0.0.2': {
-//         id: 'kWXhgcqXu_DKL5kpQ7TlM3qM6YUx9Acoc-fnFFRWJC4',
-//       },
-//       latest: {
-//         id: 'kWXhgcqXu_DKL5kpQ7TlM3qM6YUx9Acoc-fnFFRWJC4',
-//       },
-//       '*': {
-//         id: 'kSGwKjy0hwpanOFEFweWw5MLZ1zCgLx4q1JaEUKk7DY',
-//       },
-//     },
-//   }),
-//   tags
-// );
+const bundlr = new NodeBundlr('http://node2.bundlr.network', 'arweave', jwk);
+const response = await bundlr.upload(
+  JSON.stringify({
+    manifest: 'arweave/paths',
+    version: '0.1.0',
+    index: {
+      path: 'readme',
+    },
+    paths: {
+      readme: {
+        id: 'kSGwKjy0hwpanOFEFweWw5MLZ1zCgLx4q1JaEUKk7DY',
+      },
+      '0.0.2': {
+        id: 'kWXhgcqXu_DKL5kpQ7TlM3qM6YUx9Acoc-fnFFRWJC4',
+      },
+      latest: {
+        id: 'kWXhgcqXu_DKL5kpQ7TlM3qM6YUx9Acoc-fnFFRWJC4',
+      },
+      '*': {
+        id: 'kSGwKjy0hwpanOFEFweWw5MLZ1zCgLx4q1JaEUKk7DY',
+      },
+    },
+  }),
+  tags
+);
 // console.log(`File uploaded ==> https://arweave.net/${response.id}`);

@@ -10,6 +10,8 @@ import { DeployPlugin } from 'warp-contracts-plugin-deploy';
 // @ts-ignore
 import packageJson from '../package.json' assert { type: 'json' };
 import { ArNs } from './api/arns.js';
+import { init } from './api/init.js';
+
 program.version(packageJson.version);
 
 const wallet = JSON.parse(
@@ -19,17 +21,15 @@ const bundlr = new NodeBundlr('http://node2.bundlr.network', 'arweave', wallet);
 
 // ~~ Initialize Arweave ~~
 const arweave = Arweave.init({
-  host: "arweave.net",
+  host: 'arweave.net',
   timeout: 600000,
   port: 443,
-  protocol: "https",
+  protocol: 'https',
 });
 
-const warp = WarpFactory.forMainnet(
-  { ...defaultCacheOptions },
-  true
-).use(new DeployPlugin());
-
+const warp = WarpFactory.forMainnet({ ...defaultCacheOptions }, true).use(
+  new DeployPlugin()
+);
 
 program
   .command('fetch-url <url>')
@@ -37,22 +37,13 @@ program
   .option('-t, --tag <tag...>', 'Additional tags.', [])
   .description('Run an HTTP request to the specified URL using fetch.')
   .action(async (url, options) => {
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      const data = await response.json();
-
-      if (options.name) {
-        console.log(`Hello ${options.name}, here are the results:`, data);
-      } else {
-        console.log('Results:', data);
-      }
-    } catch (err) {
-      console.error('Error:', err.message);
-    }
+    console.log(url, options);
   });
+
+program
+  .command('init')
+  .description('Initializes packajs configuration.')
+  .action(async () => init({ promises: fs.promises })());
 
 program
   .command('pubjs')
@@ -68,7 +59,22 @@ program
   .option('-f, --file <file>', 'Path to the file to deploy.')
   .option('-w, --wallet <wallet>', 'Path to the arweave key file.')
   .description('Publish a file and optionally assign it an ARNS name.')
-  .action(async (options) => pubjs(bundlr, wallet)(options));
+  .action(async (options) => {
+    // if(!process.env.PATH_TO_WALLET) {
+    //   console.error('Please set your arweave wallet file path to the environm')
+    // }
+    const bundlr = new NodeBundlr(
+      'http://node2.bundlr.network',
+      'arweave',
+      JSON.parse(fs.readFileSync(process.env['PATH_TO_WALLET']).toString())
+    );
+
+    return pubjs({
+      bundlr,
+      promises: fs.promises,
+      version: packageJson.version,
+    })(options);
+  });
 
 program
   .command('arns <name>')
@@ -82,7 +88,7 @@ program
   .option('-tx, --tx <tx>', 'Resource transaction id.')
   .description('Checks if an arns name is available and can register it.')
   .action(async (name, options) => {
-    return ArNs(name, options.tx, wallet, warp, arweave)(options)
+    return ArNs(name, options.tx, wallet, warp, arweave)(options);
   });
 
 program.parse(process.argv);

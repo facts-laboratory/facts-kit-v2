@@ -1,0 +1,24 @@
+{
+  "manifest": "arweave/paths",
+  "version": "0.1.0",
+  "index": {
+    "path": "readme"
+  },
+  "paths": {
+    "readme": {
+      "id": "kSGwKjy0hwpanOFEFweWw5MLZ1zCgLx4q1JaEUKk7DY"
+    },
+    "0.0.1": {
+      "id": "kWXhgcqXu_DKL5kpQ7TlM3qM6YUx9Acoc-fnFFRWJC4"
+    },
+    "0.0.2": {
+      "id": "KIvC4ABbcypJJTgBq4UsMNO_cGAYiR3-CUdYu7trt3s"
+    },
+    "latest": {
+      "id": "KIvC4ABbcypJJTgBq4UsMNO_cGAYiR3-CUdYu7trt3s"
+    },
+    "*": {
+      "id": "kSGwKjy0hwpanOFEFweWw5MLZ1zCgLx4q1JaEUKk7D"
+    }
+  }
+}
