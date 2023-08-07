@@ -6,20 +6,23 @@ import { pubjs } from './api/pubjs.js';
 
 // @ts-ignore
 import packageJson from '../package.json' assert { type: 'json' };
-import { mkdir } from './common/util.js';
+import { init } from './api/init.js';
+
 program.version(packageJson.version);
 
-mkdir().catch(e => {
-  console.log("Error is", e)
-})
 program
   .command('fetch-url <url>')
   .option('-n, --name <name>', 'Your name.')
   .option('-t, --tag <tag...>', 'Additional tags.', [])
   .description('Run an HTTP request to the specified URL using fetch.')
   .action(async (url, options) => {
-    console.log(url, options)
+    console.log(url, options);
   });
+
+program
+  .command('init')
+  .description('Initializes packajs configuration.')
+  .action(async (url, options) => init({ promises: fs.promises })());
 
 program
   .command('pubjs')
@@ -45,7 +48,11 @@ program
       JSON.parse(fs.readFileSync(process.env['PATH_TO_WALLET']).toString())
     );
 
-    return pubjs(bundlr)(options);
+    return pubjs({
+      bundlr,
+      promises: fs.promises,
+      version: packageJson.version,
+    })(options);
   });
 
 program.parse(process.argv);
