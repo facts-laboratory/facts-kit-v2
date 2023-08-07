@@ -6,6 +6,7 @@ import Async, {
 import { promises } from 'fs';
 import NodeBundlr from '@bundlr-network/client/build/esm/node/bundlr';
 import chalk from 'chalk';
+import { getConfigAndManifest } from '../common/util.js';
 
 /**
  * @typedef {Object} PublishOptions
@@ -15,6 +16,9 @@ import chalk from 'chalk';
  * @property {Array<string>} tag - An array of tags to attach to the published file.
  * @property {Array<{name: string; value: string}>} [tags] - An array of tags to attach to the published file.
  * @property {string} file - The content of the JavaScript file to be published.
+ * @property {*} [manifest] - The content of the JavaScript file to be published.
+ * @property {*} [config] - The content of the JavaScript file to be published.
+ * @property {string} [tx] - The content of the JavaScript file to be published.
  */
 
 /**
@@ -22,29 +26,40 @@ import chalk from 'chalk';
  *
  * @author @jshaw-ar
  * @export
- * @param {*} bundlr
+ * @param {*} options
  */
-export function pubjs(bundlr) {
+export function pubjs({ bundlr, promises, version }) {
   /**
    * Publishes a file to the permaweb.
    * @param {PublishOptions} options The options for publishing the JavaScript file.
    */
   return async (options) =>
-    Async.of(options)
-      .chain(fromPromise(validateInput))
+    Async.of(promises)
+      .chain(fromPromise(getConfigAndManifest))
+      .chain((config) => fromPromise(validateInput)(options, config))
       .chain(fromPromise(getFile))
       .chain((/** @type {PublishOptions} */ options) =>
-        fromPromise(publish)(bundlr, options)
+        fromPromise(publishPackage)(bundlr, options)
       )
+      .chain((options) =>
+        fromPromise(createManifest)(promises, options, version)
+      )
+      .chain((manifest) => fromPromise(publishManifest)(bundlr, manifest))
       .fork(
         (error) => {
+          if (error?.message?.includes('config.json')) {
+            console.error(
+              chalk.red('Config not found. Please run the `init` function.')
+            );
+            process.exit();
+          }
           console.error(
             chalk.red(error?.message || error || 'An error occurred.')
           );
           process.exit();
         },
-        (output) => {
-          return output;
+        () => {
+          console.log(chalk.green('Success'));
         }
       );
 }
@@ -52,8 +67,9 @@ export function pubjs(bundlr) {
 /**
  * Validates the input.
  * @param {PublishOptions} options - The options for publishing the JavaScript file.
+ * @param {*} config - The packajs config
  */
-const validateInput = async (options) => {
+const validateInput = async (options, config) => {
   return Async.of(options)
     .chain(hasOptions)
     .chain(hasWallet)
@@ -62,6 +78,7 @@ const validateInput = async (options) => {
     .map((tags) => ({
       ...options,
       tags,
+      ...config,
     }))
     .toPromise();
 };
@@ -141,16 +158,74 @@ async function getFile(options) {
  * @param {PublishOptions} options The options for publishing the JavaScript file.
  *
  */
-async function publish(bundlr, options) {
-  console.log(chalk.yellow('Uploading package to bundlr.'));
+async function publishPackage(bundlr, options) {
+  console.log(chalk.yellow('Uploading package.'));
   const response = await bundlr.uploadFile(options.file, {
     tags: options.tags || [],
   });
   console.log(
-    `${chalk.green('File uploaded')} ==> ${chalk.underline(
+    `${chalk.green('Package uploaded')} ==> ${chalk.underline(
       `https://arweave.net/${response.id}`
     )}`
   );
 
-  return options;
+  return { ...options, tx: response.id };
+}
+
+/**
+ *
+ *
+ * @author @jshaw-ar
+ * @param {typeof import('fs').promises} promises
+ * @param {PublishOptions} options The options for publishing the JavaScript file.
+ * @param {string} version The package.json version.
+ *
+ */
+async function createManifest(promises, options, version) {
+  console.log(chalk.yellow('Creating new manifest.'));
+  const manifest = JSON.parse(options.manifest);
+  const newManifest = {
+    ...manifest,
+    paths: {
+      ...manifest.paths,
+      latest: {
+        id: options.tx,
+      },
+      [version]: {
+        id: options.tx,
+      },
+    },
+  };
+
+  await promises.writeFile(
+    './.packajs/manifest.json',
+    JSON.stringify(newManifest, null, 2)
+  );
+
+  return newManifest;
+}
+
+/**
+ *
+ *
+ * @author @jshaw-ar
+ * @param {NodeBundlr} bundlr
+ * @param {*} manifest The new manifest.
+ *
+ */
+async function publishManifest(bundlr, manifest) {
+  console.log(chalk.yellow('Uploading manifest.'));
+
+  const tags = [
+    { name: 'Content-Type', value: 'application/x.arweave-manifest+json' },
+  ];
+
+  const response = await bundlr.upload(JSON.stringify(manifest), {
+    tags,
+  });
+  console.log(
+    `${chalk.green('Manifest uploaded')} ==> ${chalk.underline(
+      `https://arweave.net/${response.id}`
+    )}`
+  );
 }
