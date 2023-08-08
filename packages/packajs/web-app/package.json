@@ -1,0 +1,33 @@
+{
+  "name": "web-app",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "VITE_MANIFEST=https://packajs.arweave.dev/manifest vite",
+    "build": "VITE_MANIFEST=https://packajs.arweave.dev/manifest vite build",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview",
+    "deploy": "rm  dist-*; node ./scripts/deploy.mjs"
+  },
+  "dependencies": {
+    "autoprefixer": "10.4.14",
+    "compare-versions": "6.1.0",
+    "postcss": "8.4.27",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-modal": "3.16.1",
+    "tailwindcss": "3.3.3"
+  },
+  "devDependencies": {
+    "@types/node": "20.4.8",
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@vitejs/plugin-react": "^4.0.3",
+    "eslint": "^8.45.0",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.3",
+    "vite": "^4.4.5"
+  }
+}
