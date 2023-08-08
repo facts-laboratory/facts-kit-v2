@@ -35,6 +35,7 @@ export const hasWallet = (options) => {
 };
 
 export const validateArns = async (options) => {
+  console.log('Options', options);
   console.log(
     chalk.yellow('Validating arns: '),
     options.arns || '<missing arns option>'
@@ -74,6 +75,44 @@ export async function getConfigAndManifest(promises) {
     config: await getConfig(promises),
     manifest: await getManifest(promises),
   };
+}
+
+/**
+ * Generates an array of metadata tags for a SmartWeave transaction that sets a record.
+ *
+ * @function
+ * @param {string} ant - The contract address.
+ * @param {string} tx - The transaction ID.
+ * @returns {Array<{name: string, value: string}>} An array of metadata tags.
+ *
+ */
+export function getSetRecordTags(ant, tx) {
+  /**
+   * An array of metadata tags describing the SmartWeave transaction.
+   * @type {Array<{name: string, value: string}>}
+   */
+  return [
+    {
+      name: 'App-Name',
+      value: 'SmartWeaveAction',
+    },
+    {
+      name: 'App-Version',
+      value: '0.3.0',
+    },
+    {
+      name: 'SDK',
+      value: 'Warp',
+    },
+    {
+      name: 'Contract',
+      value: ant,
+    },
+    {
+      name: 'Input',
+      value: `{"function":"setRecord","subDomain":"@","transactionId":"${tx}"}`,
+    },
+  ];
 }
 
 // export async function mkdir() {

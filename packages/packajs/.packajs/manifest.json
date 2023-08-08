@@ -2,23 +2,56 @@
   "manifest": "arweave/paths",
   "version": "0.1.0",
   "index": {
-    "path": "readme"
+    "path": "index.html"
   },
   "paths": {
     "readme": {
-      "id": "kSGwKjy0hwpanOFEFweWw5MLZ1zCgLx4q1JaEUKk7DY"
+      "id": "jKnEuKYwQcn3mTPOmUgtPWRGCOnNOqJLJyp4c-PzKTk"
     },
     "0.0.1": {
       "id": "kWXhgcqXu_DKL5kpQ7TlM3qM6YUx9Acoc-fnFFRWJC4"
     },
     "0.0.2": {
-      "id": "4GtTRbReOwIeIhpOWZL_DvuBYwUKTUglDkT53oUJvKA"
+      "id": "e5TQ4MshVWwCkn2ckcu4oUeX2L9PvQ_IObZM5vQJocQ"
     },
     "latest": {
-      "id": "4GtTRbReOwIeIhpOWZL_DvuBYwUKTUglDkT53oUJvKA"
+      "id": "Yj_wcmj08RKffnjoaap_dicYok5OBa2yA-kkrxpZGGY"
     },
     "*": {
       "id": "kSGwKjy0hwpanOFEFweWw5MLZ1zCgLx4q1JaEUKk7D"
+    },
+    "manifest": {
+      "id": "JogoYkqtP-8vDN6r2OxzxlxFd6XTmGyCflkWfO9Ob3Y"
+    },
+    "0.0.3": {
+      "id": "hdMPgTVE40RCcQKpbNwYnr7aefzhcJpiC_PGP36fFCk"
+    },
+    "0.0.4": {
+      "id": "zKljMfe1Mj8isMDA-lAkTihZFbjiQ4drA02ZmwDFGZg"
+    },
+    "vite.svg": {
+      "id": "JI1vtONYd5AOoPGojbx6cIunUyILn8kjuFJP7uEDvwc"
+    },
+    "index.html": {
+      "id": "RYRIn4ws7U16fQPi9NynaOsrsW-3t0m4sa_Y1jcqf9I"
+    },
+    "assets/index-70c30a7d.css": {
+      "id": "5y-AED1U9M52yyKB3cHhgQ08OkB1PqUgmB5FOQk7iXM"
+    },
+    "assets/index-9b78f6fb.js": {
+      "id": "JN16dYeIuhq6bcvtVd0HVA3aKKlLcHppqBk0E8LBXXQ"
+    },
+    "0.0.5": {
+      "id": "Yj_wcmj08RKffnjoaap_dicYok5OBa2yA-kkrxpZGGY"
+    },
+    "assets/index-4b756656.js": {
+      "id": "pCSU8KfChLnHKsztdyk-Dm9PosuTR0JUrHb9Hoz0Gco"
+    },
+    "assets/index-f72b78e5.js": {
+      "id": "ymZiUiTkAAeAkV6RNM9R7lmuA5fp2tKRaJrea7tnaJg"
+    },
+    "assets/index-535a2489.js": {
+      "id": "nck0JCpQp4Etc7PxpekpwGNsmWWDPvjOsQZ1urdJPhE"
     }
   }
 }
