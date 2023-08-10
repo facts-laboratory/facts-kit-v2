@@ -8,23 +8,26 @@ export const DEFUULT_MANIFEST = {
   manifest: 'arweave/paths',
   version: '0.1.0',
   index: {
-    path: 'readme',
+    path: 'index.html',
   },
   paths: {
     readme: {
-      id: 'kSGwKjy0hwpanOFEFweWw5MLZ1zCgLx4q1JaEUKk7DY',
+      id: 'HsLim8nzzAeyJBLtSVBDp8tM0EW_ZMWrFqtR7hyaToc',
     },
     '*': {
-      id: 'kSGwKjy0hwpanOFEFweWw5MLZ1zCgLx4q1JaEUKk7DY',
+      id: 'HsLim8nzzAeyJBLtSVBDp8tM0EW_ZMWrFqtR7hyaToc',
     },
   },
 };
 
 export const DEFUULT_CONFIG = {
   manifest: true,
-  ant: {},
+  ant: {
+    tx: '',
+    undername: '',
+  },
   pack: false,
-  readme: 'kSGwKjy0hwpanOFEFweWw5MLZ1zCgLx4q1JaEUKk7DY',
+  readme: 'HsLim8nzzAeyJBLtSVBDp8tM0EW_ZMWrFqtR7hyaToc',
   manual: {
     manifest:
       'The path manifest for the deployment. (see: https://specs.arweave.dev/#/view/lXLd0OPwo-dJLB_Amz5jgIeDhiOkjXuM3-r0H_aiNj0)',

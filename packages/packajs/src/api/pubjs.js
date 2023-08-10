@@ -6,12 +6,14 @@ import Async, {
 import NodeBundlr from '@bundlr-network/client/build/esm/node/bundlr';
 import chalk from 'chalk';
 import {
-  getConfigAndManifest,
+  getFiles,
   getSetRecordTags,
   hasOptions,
   hasWallet,
-  // validateArns,
+  validateArns,
 } from '../common/util.js';
+
+import fetch from 'node-fetch';
 
 /**
  * @typedef {Object} PublishOptions
@@ -24,6 +26,7 @@ import {
  * @property {*} [manifest] - The content of the JavaScript file to be published.
  * @property {*} [config] - The content of the JavaScript file to be published.
  * @property {string} [tx] - The content of the JavaScript file to be published.
+ * @property {Object} [packageJson] - The package.json of the package.
  */
 
 /**
@@ -33,21 +36,22 @@ import {
  * @export
  * @param {*} options
  */
-export function pubjs({ bundlr, promises, version, arweave }) {
+export function pubjs({ bundlr, promises, arweave }) {
   /**
    * Publishes a file to the permaweb.
    * @param {PublishOptions} options The options for publishing the JavaScript file.
    */
   return async (options) =>
     Async.of(promises)
-      .chain(fromPromise(getConfigAndManifest))
-      .chain((config) => fromPromise(validateInput)(options, config))
-      .chain((options) => fromPromise(getFile)(options, promises))
+      .chain(fromPromise(getFiles))
+      .chain(validateConfig)
+      .chain((object) => fromPromise(validateInput)(options, object))
+      .chain((options) => fromPromise(getTgz)(options, promises))
       .chain((/** @type {PublishOptions} */ options) =>
         fromPromise(publishPackage)(bundlr, options)
       )
       .chain((options) =>
-        fromPromise(createManifest)(bundlr, promises, options, version)
+        fromPromise(createManifest)(bundlr, promises, options)
       )
       .chain(({ manifest, options }) =>
         fromPromise(publishManifest)(bundlr, manifest, options)
@@ -72,25 +76,39 @@ export function pubjs({ bundlr, promises, version, arweave }) {
       );
 }
 
+const validateConfig = (object) => {
+  const { config, manifest, packageJson } = object;
+
+  if (!config?.readme)
+    return Rejected(
+      'Please deploy a markdown readme and add it to your config file. (or use packajs readme when available)'
+    );
+
+  if (!manifest?.paths)
+    return Rejected('Could not find `paths` in your manifest file.');
+
+  if (!packageJson?.version)
+    return Rejected('Could not find `version` in your package.json file.');
+  return Resolved(object);
+};
+
 /**
  * Validates the input.
  * @param {PublishOptions} options - The options for publishing the JavaScript file.
- * @param {*} config - The packajs config
+ * @param {{config: any; manifest: any}} object - The packajs object (manifest.json && config.json)
  */
-const validateInput = async (options, config) => {
-  return (
-    Async.of(options)
-      .chain(hasOptions)
-      .chain(hasWallet)
-      // .chain(fromPromise(validateArns))
-      .chain((options) => validateTags(options.tag))
-      .map((tags) => ({
-        ...options,
-        tags,
-        ...config,
-      }))
-      .toPromise()
-  );
+const validateInput = async (options, object) => {
+  return Async.of(options)
+    .chain(hasOptions)
+    .chain(hasWallet)
+    .chain((options) => validateArns(options, object))
+    .chain((options) => validateTags(options.tag))
+    .map((tags) => ({
+      ...options,
+      tags,
+      ...object,
+    }))
+    .toPromise();
 };
 
 const validateTags = (tags) => {
@@ -118,7 +136,7 @@ const validateTags = (tags) => {
   ]);
 };
 
-async function getFile(options, promises) {
+async function getTgz(options, promises) {
   if (options.file) {
     return options;
   }
@@ -148,8 +166,9 @@ async function getFile(options, promises) {
  */
 async function publishPackage(bundlr, options) {
   console.log(chalk.yellow('Uploading package.'));
+  const tags = [{ name: 'Name', value: 'Package' }, ...(options.tags || [])];
   const response = await bundlr.uploadFile(options.file, {
-    tags: options.tags || [],
+    tags,
   });
   console.log(
     `${chalk.green('Package uploaded')} ==> ${chalk.underline(
@@ -167,14 +186,22 @@ async function publishPackage(bundlr, options) {
  * @param {NodeBundlr} bundlr
  * @param {typeof import('fs').promises} promises
  * @param {PublishOptions} options The options for publishing the JavaScript file.
- * @param {string} version The package.json version.
  *
  */
-async function createManifest(bundlr, promises, options, version) {
+async function createManifest(bundlr, promises, options) {
   console.log(chalk.yellow('Creating new manifest.'));
-  const manifest = JSON.parse(options.manifest);
+  const config = options.config;
+  const manifest = options.manifest;
+  const version = options?.packageJson?.version;
+  const filteredPaths = Object.fromEntries(
+    Object.entries(manifest.paths).filter((t) => /^\d+\.\d+\.\d+$/.test(t[0]))
+  );
+
   const paths = {
-    ...manifest.paths,
+    ...filteredPaths,
+    readme: {
+      id: config?.readme || 'HsLim8nzzAeyJBLtSVBDp8tM0EW_ZMWrFqtR7hyaToc',
+    },
     latest: {
       id: options.tx,
     },
@@ -258,23 +285,24 @@ async function createManifest(bundlr, promises, options, version) {
  */
 async function publishManifest(bundlr, manifest, options) {
   console.log(chalk.yellow('Uploading manifest.'));
-  const config = JSON.parse(options?.config);
+  const config = options?.config;
   const tags = [
+    ...options.tags,
     { name: 'Content-Type', value: 'application/x.arweave-manifest+json' },
+    { name: 'Name', value: 'Manifest' },
   ];
 
   const response = await bundlr.upload(JSON.stringify(manifest), {
     tags,
   });
-  const tx = response.id;
   console.log(
-    `${chalk.green('Manifest uploaded')} ==> ${chalk.underline(
-      `https://arweave.net/${tx}`
+    `${chalk.bgGreen('Manifest uploaded')} ==> ${chalk.underline(
+      `https://arweave.net/${response.id}`
     )}`
   );
 
   return {
-    tx,
+    tx: response.id,
     ant: config?.ant?.tx,
     arns: options.arns,
     wallet: options?.wallet,

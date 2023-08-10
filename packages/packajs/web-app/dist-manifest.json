@@ -2,10 +2,10 @@
 "manifest": "arweave/paths",
 "version": "0.1.0",
 "paths": {
-"vite.svg":{"id":"ThkcELt5IZBLTOchbzsYIdjdhIV0GRE7ApWi3dZWXSg"},
-"assets/index-70c30a7d.css":{"id":"HZANx8pGqqKrODsP7DAS6kA7psX7ilnHbVrrlEAesbY"},
-"index.html":{"id":"CeoQqTnEmN43P2BMlJFzv8vXjT7CUPVcqu7z1BGLMVw"},
-"assets/index-535a2489.js":{"id":"i8t6qtFRoAxcxtav26eLEspj9Kr9Lmq5Q69sQUwRFV0"}
+"vite.svg":{"id":"cK20CSBaIt4lCR8J9NMIYC8OFfYccrrLGfU5n1Y_idY"},
+"index.html":{"id":"eeuwuqrR5pGumqIkaD6qOcq69uth1SOVzSyN0zzBNeo"},
+"assets/index-70c30a7d.css":{"id":"Igjo-3x0F8smgf_bmen6fM7OaKKPWQtorrOWyAqhDFg"},
+"assets/index-535a2489.js":{"id":"6AfdSFOVcaU6aOzBpxhYT5ZCcDLMwp-1-perFC80pC4"}
 },
 "index":{"path":"index.html"}
 }

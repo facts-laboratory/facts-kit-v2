@@ -1,25 +1,4 @@
-import chalk from 'chalk';
-import { promises } from 'fs';
-// import * as path from 'path';
 import { Rejected, Resolved } from './hyper-async.js';
-
-export async function readFile() {
-  try {
-    // Provide the file path as the first argument to readFile
-    const filePath = './.packajs/manifest.json';
-
-    // The `readFile` method returns a promise, so we can use `await` to wait for the result.
-    const fileContent = await promises.readFile(filePath, {
-      encoding: 'utf-8',
-    });
-
-    // Do something with the file content
-    console.log('CONTENTS', fileContent);
-  } catch (error) {
-    // Handle any errors that might occur during file reading
-    console.error('Error reading the file:', error.message);
-  }
-}
 
 export const hasOptions = (options) => {
   if (!options) return Rejected('There were no options passed to the command.');
@@ -34,24 +13,22 @@ export const hasWallet = (options) => {
   return Resolved(options);
 };
 
-export const validateArns = async (options) => {
-  console.log('Options', options);
-  console.log(
-    chalk.yellow('Validating arns: '),
-    options.arns || '<missing arns option>'
-  );
+export const validateArns = (options, object) => {
+  if (!options.arns) return Resolved(options);
+  const ANT = object?.config?.ant?.tx;
+  if (!isTx(ANT))
+    return Rejected('The ANT tx in your config file should be an Arweave tx.');
   // Make sure the wallet being used owns or controls the ARNS name being updated.
-  return options;
+  return Resolved(options);
 };
 
 /**
- *
- *
  * @author @jshaw-ar
  * @param {typeof import('fs').promises} promises
+ * @param {string} path
  */
-export async function getConfig(promises) {
-  return promises.readFile('./.packajs/config.json', 'utf-8');
+export async function getFile(promises, path) {
+  return promises.readFile(path, 'utf-8');
 }
 
 /**
@@ -60,20 +37,11 @@ export async function getConfig(promises) {
  * @author @jshaw-ar
  * @param {typeof import('fs').promises} promises
  */
-export async function getManifest(promises) {
-  return promises.readFile('./.packajs/manifest.json', 'utf-8');
-}
-
-/**
- *
- *
- * @author @jshaw-ar
- * @param {typeof import('fs').promises} promises
- */
-export async function getConfigAndManifest(promises) {
+export async function getFiles(promises) {
   return {
-    config: await getConfig(promises),
-    manifest: await getManifest(promises),
+    config: JSON.parse(await getFile(promises, './.packajs/config.json')),
+    manifest: JSON.parse(await getFile(promises, './.packajs/manifest.json')),
+    packageJson: JSON.parse(await getFile(promises, './package.json')),
   };
 }
 
@@ -115,24 +83,24 @@ export function getSetRecordTags(ant, tx) {
   ];
 }
 
-// export async function mkdir() {
-//   try {
-//     const newDirectoryName = '.packajs';
+/**
+ *
+ *
+ * @author @jshaw-ar
+ * @export
+ * @param {string} tx
+ * @return {boolean | undefined}
+ */
+export function isTx(tx) {
+  if (!tx) return undefined;
+  const addr = tx.toString().trim();
+  return /[a-z0-9_-]{43}/i.test(addr);
+}
 
-//     // Provide the desired directory path as the first argument to mkdir
-//     const newDirectoryPath = path.join(__dirname, newDirectoryName);
-
-//     // The `mkdir` method returns a promise, so we can use `await` to wait for the result.
-//     await promises.mkdir(newDirectoryPath);
-
-//     console.log('Directory created successfully!');
-//   } catch (error) {
-//     if (error.code === 'EEXIST') {
-//       console.log('EXISTS!');
-//       return;
-//     } else {
-//       console.log(chalk.red(error?.message || 'An error occurred.'));
-//       process.exit();
-//     }
-//   }
-// }
+export function parseJson(json) {
+  try {
+    return Resolved(JSON.parse(json));
+  } catch (error) {
+    return Rejected('The ./.packajs/config.json is invalid JSON.');
+  }
+}
