@@ -4,12 +4,14 @@
     "tx": "cTqVzAom6wGYXN9_S3LnkNGPIu7i-c7t1YPEla8Tzb8",
     "name": "packajs"
   },
+  "app": "16h4ko9VMjt4HDGVrz0KcZydJ71Zz4uVvfsOj-NgkhY",
   "pack": false,
-  "readme": "v55OnYAiHYIthfjEW1QdlKzoYocqtCppTNCkkmZmLHE",
+  "readme": "HsLim8nzzAeyJBLtSVBDp8tM0EW_ZMWrFqtR7hyaToc",
   "manual": {
     "manifest": "The path manifest for the deployment. (see: https://specs.arweave.dev/#/view/lXLd0OPwo-dJLB_Amz5jgIeDhiOkjXuM3-r0H_aiNj0)",
     "ant": "The tx ID of the ARNS ANT. (see: https://ar.io/arns-pilot/)",
     "app": "If set, his is where the index file will point. This could be docs, a readme, anything.  Point it to an entire react app using it's manifest id.  You can use https://<your-ant>.arweave.dev/manifest to access the manifest of this package.",
+    "pack": "Tells the cli whether or not to run npm pack in the ./dist folder.  You can also pass --pack to the cli to specify a directory to pack.",
     "readme": "The txid of the readme file (could be anything, a video, docs, etc.).  This will show at (https://<your-ant>.arweave.dev/readme)"
   }
 }

@@ -5,7 +5,7 @@ import Async, {
   Resolved,
   fromPromise,
 } from '../common/hyper-async.js';
-import { getConfig } from '../common/util.js';
+import { getFile } from '../common/util.js';
 
 /**
  * Initializes the module with custom promises.
@@ -26,7 +26,9 @@ export function init({ promises }) {
    */
   return async () => {
     return Async.of(promises)
-      .chain(fromPromise(getConfig))
+      .chain((promises) =>
+        fromPromise(getFile)(promises, './.packajs/config.json')
+      )
       .bichain(() => fromPromise(createConfig)(promises), exists)
       .fork(
         (e) => {

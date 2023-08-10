@@ -11,12 +11,16 @@
     "build:src": "esbuild src/main.js --platform=node --format=esm --bundle --outdir=dist",
     "build": "rm -r dist; npm run build:types && npm run build:src && cp package.json dist/package.json",
     "pub": "npm run build && (cd dist && npm publish --access public)",
-    "perma-pub": "node ./scripts/perma-pub.mjs ./dist/facts-kit-facts-sdk-v2-0.3.15.tgz"
+    "perma-pub": "node ./scripts/perma-pub.mjs ./dist/facts-kit-facts-sdk-v2-0.3.15.tgz",
+    "packajs": "packajs pubjs -w ${PATH_TO_WALLET} --arns",
+    "pub:file": "bundlr upload ${FILE} -h http://node2.bundlr.network -w ${PATH_TO_WALLET} -c arweave",
+    "init": "packajs init"
   },
   "author": "jshaw-ar",
   "license": "ISC",
   "devDependencies": {
     "@bundlr-network/client": "0.11.9",
+    "@facts-kit/packajs": "https://arweave.net/W_y4-EAlTUvFZ4krCdqaEHtUB9786bJK12XjG0pA1c4/latest",
     "@types/node": "20.4.0",
     "esbuild": "0.18.11",
     "typescript": "5.1.6",

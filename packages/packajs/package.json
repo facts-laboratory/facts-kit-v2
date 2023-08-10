@@ -1,6 +1,6 @@
 {
   "name": "@facts-kit/packajs",
-  "version": "0.0.2",
+  "version": "0.0.9",
   "description": "A package manager for the permaweb.",
   "main": "cli.js",
   "types": "cli.d.ts",
@@ -10,24 +10,27 @@
   },
   "scripts": {
     "test": "uvu test",
-    "build:types": "tsc",
     "build:src": "node ./scripts/build.js",
-    "build": "rm -r dist; npm run build:src && cp package.json dist/package.json",
+    "build": "rm -r dist; npm run build:src && cp package.json dist/package.json && (cd dist && npm pack)",
     "pub": "npm run build && (cd dist && npm publish --access public)",
     "pub:file": "bundlr upload ${FILE} -h http://node2.bundlr.network -w ${PATH_TO_WALLET} -c arweave",
-    "perma-pub": "node src/cli.js pubjs -t Type=perma-package -t Title=PackaJS -t Description=\"Publish js packages to the permaweb. Forever.\" -t Read-Me=https://github.com/facts-laboratory/facts-kit-v2/blob/main/packages/packajs/README.md -t Repository=https://github.com/facts-laboratory/facts-kit-v2/tree/main/packages/packajs -t Render-With=jkPpggGUW-ofqKKYzG4Al8luFwNURoqXkpLFjqmiS58 -w ${PATH_TO_WALLET}"
+    "perma-pub": "npm run build && node src/cli.js pubjs -t Type=perma-package -t Title=PackaJS -t Description=\"Publish js packages to the permaweb. Forever.\" -t Read-Me=https://github.com/facts-laboratory/facts-kit-v2/blob/main/packages/packajs/README.md -t Repository=https://github.com/facts-laboratory/facts-kit-v2/tree/main/packages/packajs -t Render-With=jkPpggGUW-ofqKKYzG4Al8luFwNURoqXkpLFjqmiS58 -w ${PATH_TO_WALLET} --arns"
   },
   "author": "jshaw-ar",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "20.4.0",
     "esbuild": "0.18.11",
+    "replace-in-file": "7.0.1",
     "typescript": "5.1.6"
   },
   "private": false,
   "dependencies": {
     "@bundlr-network/client": "0.11.9",
+    "arweave": "1.14.4",
     "chalk": "5.3.0",
-    "commander": "11.0.0"
+    "commander": "11.0.0",
+    "node-fetch": "3.3.2",
+    "prompts": "2.4.2"
   }
 }
