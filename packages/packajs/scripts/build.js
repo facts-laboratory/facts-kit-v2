@@ -1,6 +1,7 @@
 import { build } from 'esbuild';
 import { readFileSync } from 'fs';
 import { extname, dirname as _dirname } from 'path';
+import replace from 'replace-in-file';
 
 const nodeModules = new RegExp(
   /^(?:.*[\\/])?node_modules(?:\/(?!postgres-migrations).*)?$/
@@ -37,6 +38,16 @@ build({
   },
   plugins: [plugin],
 })
+  .then(() =>
+    replace.sync({
+      files: './dist/cli.js',
+      from: [
+        `console.warn("bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)");`,
+      ],
+      to: '',
+      countMatches: true,
+    })
+  )
   .catch((e) => {
     console.log(e);
     return process.exit(1);
