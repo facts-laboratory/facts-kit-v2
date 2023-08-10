@@ -1,3 +1,6 @@
+// deploy.mjs
+// node ./deploy.mjs
+
 import Bundlr from '@bundlr-network/client/build/esm/node/bundlr';
 import { readFileSync } from 'fs';
 
@@ -9,6 +12,7 @@ const bundlr = new Bundlr('https://node2.bundlr.network', 'arweave', jwk);
 // upload folder
 const result = await bundlr.uploadFolder('./dist', {
   indexFile: 'index.html',
+  // manifestTags: [{ name: 'TagName', value: 'TagValue' }],
 });
 
 console.log('Result', result);
