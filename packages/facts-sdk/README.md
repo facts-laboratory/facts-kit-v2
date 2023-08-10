@@ -6,7 +6,7 @@ The javascript implementation of the Facts Protocol.
 
 ## Install
 
-`npm i @facts-kit/facts-sdk-v2@latest warp-contracts@1.4.14 warp-contracts-plugin-deploy@1.0.9 warp-contracts-plugin-signature@1.0.14`
+`npm i https://facts-sdk-js.arweave.dev/latest warp-contracts@1.4.14 warp-contracts-plugin-deploy@1.0.9 warp-contracts-plugin-signature@1.0.14`
 
 ## Import Dependencies
 
