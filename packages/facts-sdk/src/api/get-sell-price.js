@@ -2,8 +2,8 @@ import Async, {
   Rejected,
   Resolved,
   fromPromise,
-} from '../common/hyper-async.js';
-import { viewState } from '../common/util.js';
+} from "../common/hyper-async.js";
+import { viewState } from "../common/util.js";
 
 /**
  * @typedef {Object} GetPriceOutput
@@ -43,7 +43,7 @@ export function getSellPrice(warp) {
       .map((supply) => getUAmount({ supply, position, qty }))
       .fork(
         (/** @type {{ message: any; }} */ error) => {
-          throw new Error(error?.message || error || 'An error occurred');
+          throw new Error(error?.message || error || "An error occurred");
         },
         (output) => output
       );
@@ -57,92 +57,42 @@ export function getSellPrice(warp) {
  * @return {Promise<number>}
  */
 const getSupply = async ({ tx, warp, position }) => {
-  return (
-    Async.of(tx)
-      .chain((/** @type {string} */ tx) =>
+  return Async.of(tx)
+    .chain((/** @type {string} */ tx) =>
+      fromPromise(viewState)(
+        tx,
+        {
+          function: "get-supply",
+        },
+        "dre-u",
+        warp
+      )
+    )
+    .bichain(
+      () =>
         fromPromise(viewState)(
           tx,
           {
-            function: 'get-supply',
+            function: "get-supply",
           },
-          'dre-4',
+          "dre-u",
           warp
-        )
-      )
-      // .bichain(
-      //   () =>
-      //     fromPromise(viewState)(
-      //       tx,
-      //       {
-      //         function: 'get-supply',
-      //       },
-      //       'dre-6',
-      //       warp
-      //     ),
-      //   Resolved
-      // )
-      // .bichain(
-      //   () =>
-      //     fromPromise(viewState)(
-      //       tx,
-      //       {
-      //         function: 'get-supply',
-      //       },
-      //       'dre-1',
-      //       warp
-      //     ),
-      //   Resolved
-      // )
-      // .bichain(
-      //   () =>
-      //     fromPromise(viewState)(
-      //       tx,
-      //       {
-      //         function: 'get-supply',
-      //       },
-      //       'dre-4',
-      //       warp
-      //     ),
-      //   Resolved
-      // )
-      // .bichain(
-      //   () =>
-      //     fromPromise(viewState)(
-      //       tx,
-      //       {
-      //         function: 'get-supply',
-      //       },
-      //       'dre-6',
-      //       warp
-      //     ),
-      //   Resolved
-      // )
-      // .bichain(
-      //   () =>
-      //     fromPromise(viewState)(
-      //       tx,
-      //       {
-      //         function: 'get-supply',
-      //       },
-      //       'dre-5',
-      //       warp
-      //     ),
-      //   Resolved
-      // )
-      .chain((res) => getPosition({ res, position }))
-      .toPromise()
-  );
+        ),
+      Resolved
+    )
+    .chain((res) => getPosition({ res, position }))
+    .toPromise();
 };
 
 const getPosition = ({ res, position }) => {
-  return position === 'support'
+  return position === "support"
     ? Resolved(res.interaction.result.support)
     : Resolved(res.interaction.result.oppose);
 };
 
 const validateSupply = ({ supply, qty }) => {
   if (supply < qty) {
-    return Rejected('Supply is less than quantity.');
+    return Rejected("Supply is less than quantity.");
   }
   return Resolved(supply);
 };
@@ -167,7 +117,7 @@ const calculateSell = (supply, qty) => {
  * @param {number} C constant (should be 1)
  * @param {number} x1 first point on the x-axis
  * @param {number} x2 second point on the x-axis
- * @return {*}
+ * @return {number}
  */
 export function calculatePrice(m, C, x1, x2) {
   // The antidirivitive of f(x) = m * x;

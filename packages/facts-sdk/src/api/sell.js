@@ -1,4 +1,4 @@
-import Async, { Resolved, fromPromise } from '../common/hyper-async.js';
+import Async, { Resolved, fromPromise } from "../common/hyper-async.js";
 
 /**
  * Sell function
@@ -19,96 +19,42 @@ export function sell({ warp, signer, env }) {
    * @returns {Promise<string>} - tx id of interaction
    */
   return async ({ qty, tx, position }) => {
-    return (
-      Async.of({ qty, tx, position, warp })
-        .chain(({ qty, tx, position, warp }) =>
+    return Async.of({ qty, tx, position, warp })
+      .chain(({ qty, tx, position, warp }) =>
+        fromPromise(interact)({
+          qty,
+          tx,
+          position,
+          warp,
+          signer,
+          dre: "dre-u",
+          env,
+        })
+      )
+      .bichain(
+        () =>
           fromPromise(interact)({
             qty,
             tx,
             position,
             warp,
             signer,
-            dre: 'dre-5',
+            dre: "dre-u",
             env,
-          })
-        )
-        .bichain(
-          () =>
-            fromPromise(interact)({
-              qty,
-              tx,
-              position,
-              warp,
-              signer,
-              dre: 'dre-6',
-              env,
-            }),
-          Resolved
-        )
-        // .bichain(
-        //   () =>
-        //     fromPromise(interact)({
-        //       qty,
-        //       tx,
-        //       position,
-        //       warp,
-        //       signer,
-        //       dre: 'dre-1',
-        //       env,
-        //     }),
-        //   Resolved
-        // )
-        // .bichain(
-        //   () =>
-        //     fromPromise(interact)({
-        //       qty,
-        //       tx,
-        //       position,
-        //       warp,
-        //       signer,
-        //       dre: 'dre-4',
-        //       env,
-        //     }),
-        //   Resolved
-        // )
-        // .bichain(
-        //   () =>
-        //     fromPromise(interact)({
-        //       qty,
-        //       tx,
-        //       position,
-        //       warp,
-        //       signer,
-        //       dre: 'dre-5',
-        //       env,
-        //     }),
-        //   Resolved
-        // )
-        // .bichain(
-        //   () =>
-        //     fromPromise(interact)({
-        //       qty,
-        //       tx,
-        //       position,
-        //       warp,
-        //       signer,
-        //       dre: 'dre-6',
-        //       env,
-        //     }),
-        //   Resolved
-        // )
-        .fork(
-          (/** @type {{ message: any; }} */ error) => {
-            throw new Error(error?.message || error || 'An error occurred');
-          },
-          (/** @type {string} */ output) => output
-        )
-    );
+          }),
+        Resolved
+      )
+      .fork(
+        (/** @type {{ message: any; }} */ error) => {
+          throw new Error(error?.message || error || "An error occurred");
+        },
+        (/** @type {string} */ output) => output
+      );
   };
 }
 
 const interact = async ({ qty, tx, position, warp, dre, signer, env }) => {
-  if (env === 'browser') {
+  if (env === "browser") {
     await signer.setPublicKey();
   }
 
@@ -119,11 +65,11 @@ const interact = async ({ qty, tx, position, warp, dre, signer, env }) => {
       remoteStateSyncEnabled: true,
       internalWrites: true,
       allowBigInt: true,
-      unsafeClient: 'skip',
+      unsafeClient: "skip",
     })
     .connect(signer)
     .writeInteraction({
-      function: 'sell',
+      function: "sell",
       position,
       qty,
     });

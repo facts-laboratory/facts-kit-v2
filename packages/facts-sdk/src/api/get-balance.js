@@ -1,5 +1,5 @@
-import Async, { Resolved, fromPromise } from '../common/hyper-async.js';
-import { viewState } from '../common/util.js';
+import Async, { fromPromise } from "../common/hyper-async.js";
+import { viewState } from "../common/util.js";
 
 /**
  * @typedef {Object} GetBalanceOutput
@@ -35,81 +35,16 @@ export function getBalance(warp) {
         fromPromise(viewState)(
           tx,
           {
-            function: 'balance',
+            function: "balance",
             target,
           },
-          'dre-4',
+          "dre-u",
           warp
         )
       )
-      // .bichain(
-      //   () =>
-      //     fromPromise(viewState)(
-      //       tx,
-      //       {
-      //         function: 'balance',
-      //         target,
-      //       },
-      //       'dre-6',
-      //       warp
-      //     ),
-      //   Resolved
-      // )
-      // .bichain(
-      //   () =>
-      //     fromPromise(viewState)(
-      //       tx,
-      //       {
-      //         function: 'balance',
-      //         target,
-      //       },
-      //       'dre-1',
-      //       warp
-      //     ),
-      //   Resolved
-      // )
-      // .bichain(
-      //   () =>
-      //     fromPromise(viewState)(
-      //       tx,
-      //       {
-      //         function: 'balance',
-      //         target,
-      //       },
-      //       'dre-4',
-      //       warp
-      //     ),
-      //   Resolved
-      // )
-      // .bichain(
-      //   () =>
-      //     fromPromise(viewState)(
-      //       tx,
-      //       {
-      //         function: 'balance',
-      //         target,
-      //       },
-      //       'dre-6',
-      //       warp
-      //     ),
-      //   Resolved
-      // )
-      // .bichain(
-      //   () =>
-      //     fromPromise(viewState)(
-      //       tx,
-      //       {
-      //         function: 'balance',
-      //         target,
-      //       },
-      //       'dre-5',
-      //       warp
-      //     ),
-      //   Resolved
-      // )
       .fork(
         (error) => {
-          throw new Error(error?.message || error || 'An error occurred');
+          throw new Error(error?.message || error || "An error occurred");
         },
         ({ interaction, dre }) => {
           return { result: interaction.result, dre };

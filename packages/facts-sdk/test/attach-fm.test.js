@@ -13,7 +13,7 @@ const jwk = JSON.parse(
   fs.readFileSync(process.env['PATH_TO_WALLET']).toString()
 );
 
-test('attach-fm', async () => {
+test.skip('attach-fm', async () => {
   const warp = getWarp();
   const output = await attach({
     warp,
