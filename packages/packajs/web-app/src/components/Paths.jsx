@@ -1,5 +1,5 @@
-import { compareVersions } from 'compare-versions';
-import { useEffect, useState } from 'react';
+import { compareVersions } from "compare-versions";
+import { useEffect, useState } from "react";
 
 // eslint-disable-next-line react/prop-types
 const PathsDropdown = ({ paths }) => {
@@ -10,7 +10,7 @@ const PathsDropdown = ({ paths }) => {
   useEffect(() => {
     if (paths) {
       const versions = Object.keys(paths)
-        .filter((key) => /^\d+\.\d+\.\d+$/.test(key))
+        .filter((key) => /^\d+\.\d+\.\d+$/.test.skip(key))
         .sort(compareVersions)
         .reverse();
       setVersionsClone(versions);

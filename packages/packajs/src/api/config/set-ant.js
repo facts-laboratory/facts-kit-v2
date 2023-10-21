@@ -2,10 +2,10 @@ import Async, {
   Rejected,
   Resolved,
   fromPromise,
-} from '../../common/hyper-async.js';
-import chalk from 'chalk';
-import { getFile, isTx, parseJson } from '../../common/util.js';
-import fetch from 'node-fetch';
+} from "../../common/hyper-async.js";
+import chalk from "chalk";
+import { getFile, isTx, parseJson } from "../../common/util.js";
+import fetch from "node-fetch";
 
 /**
  *
@@ -22,14 +22,14 @@ export function setAnt({ promises }) {
   return async (ant, options) => {
     if (options.name)
       return Async.of(undefined)
-        .chain(() => fromPromise(fetcNameRegistryState)('dre-1', promises))
+        .chain(() => fromPromise(fetcNameRegistryState)("dre-1", promises))
         .bichain(
-          () => fromPromise(fetcNameRegistryState)('dre-3', promises),
+          () => fromPromise(fetcNameRegistryState)("dre-3", promises),
           Resolved
         )
         .chain((response) => checkExists(response, ant))
         .bichain(
-          () => fromPromise(fetcNameRegistryState)('dre-4', promises),
+          () => fromPromise(fetcNameRegistryState)("dre-4", promises),
           Resolved
         )
         .chain((response) => checkExists(response, ant))
@@ -38,41 +38,41 @@ export function setAnt({ promises }) {
         .chain((ant) => updateConfigForNameOption(promises, ant))
         .fork(
           (error) => {
-            if (error?.message?.includes('config.json')) {
+            if (error?.message?.includes("config.json")) {
               console.error(
-                chalk.red('Config not found. Please run the `init` function.')
+                chalk.red("Config not found. Please run the `init` function.")
               );
               process.exit();
             }
             console.error(
-              chalk.red(error?.message || error || 'An error occurred.')
+              chalk.red(error?.message || error || "An error occurred.")
             );
             process.exit();
           },
           () => {
-            console.log(chalk.green('Success'));
+            console.log(chalk.green("Success"));
           }
         );
     return Async.of(ant)
       .chain(validateAnt)
-      .chain(() => fromPromise(getFile)(promises, './.packajs/config.json'))
+      .chain(() => fromPromise(getFile)(promises, "./.packajs/config.json"))
       .chain(parseJson)
       .chain((config) => fromPromise(updateConfig)(promises, config, ant))
       .fork(
         (error) => {
-          if (error?.message?.includes('config.json')) {
+          if (error?.message?.includes("config.json")) {
             console.error(
-              chalk.red('Config not found. Please run the `init` function.')
+              chalk.red("Config not found. Please run the `init` function.")
             );
             process.exit();
           }
           console.error(
-            chalk.red(error?.message || error || 'An error occurred.')
+            chalk.red(error?.message || error || "An error occurred.")
           );
           process.exit();
         },
         () => {
-          console.log(chalk.green('Success'));
+          console.log(chalk.green("Success"));
         }
       );
   };
@@ -85,7 +85,7 @@ export function setAnt({ promises }) {
  * @param {string} ant
  */
 function validateAnt(ant) {
-  if (!isTx(ant)) return Rejected('Please pass a valid ANT tx.');
+  if (!isTx(ant)) return Rejected("Please pass a valid ANT tx.");
   return Resolved(ant);
 }
 
@@ -99,7 +99,7 @@ function validateAnt(ant) {
  *
  */
 async function updateConfig(promises, config, ant) {
-  console.log(chalk.yellow('Updating ant.tx in ./.packajs/config.json'));
+  console.log(chalk.yellow("Updating ant.tx in ./.packajs/config.json"));
   const newConfig = {
     ...config,
     ant: {
@@ -109,14 +109,14 @@ async function updateConfig(promises, config, ant) {
   };
 
   await promises.writeFile(
-    './.packajs/config.json',
+    "./.packajs/config.json",
     JSON.stringify(newConfig, null, 2)
   );
 }
 
-const ARNS_REGISTRY = 'bLAgYxAdX2Ry-nt6aH2ixgvJXbpsEYm28NgJgyqfs-U';
+const ARNS_REGISTRY = "bLAgYxAdX2Ry-nt6aH2ixgvJXbpsEYm28NgJgyqfs-U";
 
-const nameToBuy = 'saif';
+const nameToBuy = "saif";
 
 const checkExists = (response, ant) => {
   const records = response?.state?.records;
@@ -134,11 +134,11 @@ const fetcNameRegistryState = async (dre, promises) => {
     `https://${dre}.warp.cc/contract/?id=${ARNS_REGISTRY}`
   );
   if (!response.ok) {
-    throw new Error('Error fetching ARNS Registry state.');
+    throw new Error("Error fetching ARNS Registry state.");
   }
   const results = await response.json();
   // @ts-ignore
-  if (results?.status === 'blacklisted') {
+  if (results?.status === "blacklisted") {
     throw new Error(`Blacklisted: ${dre}`);
   }
   return results;
@@ -146,7 +146,7 @@ const fetcNameRegistryState = async (dre, promises) => {
 
 function updateConfigForNameOption(promises, ant) {
   return Async.of(undefined)
-    .chain(() => fromPromise(getFile)(promises, './.packajs/config.json'))
+    .chain(() => fromPromise(getFile)(promises, "./.packajs/config.json"))
     .chain(parseJson)
     .chain((config) => fromPromise(updateConfig)(promises, config, ant));
 }
