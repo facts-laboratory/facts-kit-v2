@@ -1,10 +1,6 @@
 import chalk from 'chalk';
 import { DEFUULT_CONFIG, DEFUULT_MANIFEST } from '../common/constants.js';
-import Async, {
-  Rejected,
-  Resolved,
-  fromPromise,
-} from '../common/hyper-async.js';
+import Async, { Rejected, fromPromise } from '../common/hyper-async.js';
 import { getFile } from '../common/util.js';
 
 /**
