@@ -194,9 +194,7 @@ async function createManifest(bundlr, promises, options) {
   const manifest = options.manifest;
   const version = options?.packageJson?.version;
   const filteredPaths = Object.fromEntries(
-    Object.entries(manifest.paths).filter((t) =>
-      /^\d+\.\d+\.\d+$/.test.skip(t[0])
-    )
+    Object.entries(manifest.paths).filter((t) => /^\d+\.\d+\.\d+$/.test(t[0]))
   );
 
   const paths = {

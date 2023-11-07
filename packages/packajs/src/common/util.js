@@ -94,7 +94,7 @@ export function getSetRecordTags(ant, tx) {
 export function isTx(tx) {
   if (!tx) return undefined;
   const addr = tx.toString().trim();
-  return /[a-z0-9_-]{43}/i.test.skip(addr);
+  return /[a-z0-9_-]{43}/i.test(addr);
 }
 
 export function parseJson(json) {

@@ -14,6 +14,7 @@ import chalk from "chalk";
 import { setAnt } from "./api/config/set-ant.js";
 import { setTx, upload } from "./api/config/readme.js";
 import { web } from "./api/generate/web.js";
+import { renderer } from "./api/generate/renderer.js";
 process.env.NO_WARNINGS = "experimental";
 
 program.version(packageJson.version);
@@ -207,6 +208,11 @@ generate
   .description(
     "Generates a reactjs permaweb app with redux, tailwind, redux first router."
   )
-  .action((input) => web({ promises: fs.promises })());
+  .action(() => web({ promises: fs.promises })());
+
+generate
+  .command("renderer")
+  .description("Generates a reactjs renderer with cosmos react.")
+  .action(() => renderer({ promises: fs.promises })());
 
 program.parse(process.argv);

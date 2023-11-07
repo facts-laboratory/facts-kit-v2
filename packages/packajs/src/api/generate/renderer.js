@@ -14,7 +14,7 @@ import * as path from "path";
  * @param {typeof import('fs').promises} options.promises - The 'fs.promises' module for handling file system operations.
  * @throws {Error} Throws an error if there is a problem with the HTTP request, file operations, or extraction.
  */
-export function web({ promises }) {
+export function renderer({ promises }) {
   /**
    * Sets the ant.tx in the config.
    */
@@ -78,6 +78,6 @@ async function fetchZip() {
  */
 async function unzipAndCleanup({ data, promises }) {
   await promises.writeFile("downloaded.zip", Buffer.from(data));
-  await extract("downloaded.zip", { dir: path.resolve("app") });
+  await extract("downloaded.zip", { dir: path.resolve("renderer") });
   await promises.unlink("downloaded.zip");
 }

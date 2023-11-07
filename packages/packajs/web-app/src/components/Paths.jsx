@@ -10,7 +10,7 @@ const PathsDropdown = ({ paths }) => {
   useEffect(() => {
     if (paths) {
       const versions = Object.keys(paths)
-        .filter((key) => /^\d+\.\d+\.\d+$/.test.skip(key))
+        .filter((key) => /^\d+\.\d+\.\d+$/.test(key))
         .sort(compareVersions)
         .reverse();
       setVersionsClone(versions);
