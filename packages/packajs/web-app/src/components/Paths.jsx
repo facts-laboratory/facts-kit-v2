@@ -1,5 +1,5 @@
-import { compareVersions } from 'compare-versions';
-import { useEffect, useState } from 'react';
+import { compareVersions } from "compare-versions";
+import { useEffect, useState } from "react";
 
 // eslint-disable-next-line react/prop-types
 const PathsDropdown = ({ paths }) => {

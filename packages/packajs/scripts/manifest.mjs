@@ -1,5 +1,5 @@
 const url =
-  'https://arweave.net/raw/GatrHQU42idgD1Rb9sjJteSkvghfN3MYD8JGB83iHqk';
+  'https://arweave.net/raw/irlMXzWyZxmAJiEu0c2uam51uUlqUy7IbuwcirRN63M';
 fetch(url)
   .then((response) => {
     if (!response.ok) {

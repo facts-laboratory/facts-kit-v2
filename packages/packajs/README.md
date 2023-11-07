@@ -92,3 +92,10 @@ Go to your manifest `tx` to view the web app.
 ## Help
 
 `packajs pubjs --help`
+
+## Generating
+
+`packajs` has a generate command that allows you to generate:
+
+1. A react app `packajs generate web`
+2. A react renderer/package (component that can be installed on your app `npm i <package>`) `packajs generate renderer`.

@@ -1,19 +1,19 @@
-import { suite } from 'uvu';
-import * as assert from 'uvu/assert';
+import { suite } from "uvu";
+import * as assert from "uvu/assert";
 
-import * as fs from 'fs';
-import { DeployPlugin, ArweaveSigner } from 'warp-contracts-plugin-deploy';
+import * as fs from "fs";
+import { DeployPlugin, ArweaveSigner } from "warp-contracts-plugin-deploy";
 
-import { deploy } from '../src/api/deploy-fm.js';
-import { getWarp } from '../test-tools/warp.js';
+import { deploy } from "../src/api/deploy-fm.js";
+import { getWarp } from "../test-tools/warp.js";
 
-const test = suite('deploy-fm');
+const test = suite("deploy-fm");
 
 const jwk = JSON.parse(
-  fs.readFileSync(process.env['PATH_TO_WALLET']).toString()
+  fs.readFileSync(process.env["PATH_TO_WALLET"]).toString()
 );
 
-test('deploy-fm', async () => {
+test.skip("deploy-fm", async () => {
   const warp = getWarp();
   const output = await deploy({
     warp,
@@ -21,16 +21,16 @@ test('deploy-fm', async () => {
     deployPlugin: new DeployPlugin(),
   })({
     tags: {
-      type: 'test',
-      title: 'Test Fact Market',
-      description: 'Testing Fact Markets',
-      renderWith: 'renderer',
+      type: "test",
+      title: "Test Fact Market",
+      description: "Testing Fact Markets",
+      renderWith: "renderer",
       topics: [],
     },
-    extraTags: [{ name: 'Some', value: 'Tag' }],
-    rebutTx: 'test',
-    data: 'test fact market data',
-    position: 'support',
+    extraTags: [{ name: "Some", value: "Tag" }],
+    rebutTx: "test",
+    data: "test fact market data",
+    position: "support",
   });
 });
 

@@ -9,5 +9,10 @@
   },
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "dependencies": {
+    "extract-zip": "2.0.1",
+    "node-fetch": "3.3.2",
+    "unzipper": "0.10.14"
+  }
 }
