@@ -32,11 +32,17 @@
     "0.0.9": {
       "id": "vZr5mq9AXHzE3vV3NpKPZUC-7xKbfwA5zJYBS2cgxY8"
     },
+    "0.0.10": {
+      "id": "6HOLtVhLL5onLIWQ1vUqZ3v3J3ruHMLmGq9QpPNk-8g"
+    },
+    "0.0.11": {
+      "id": "qhrSoK5yEztzHYpEZnKgjqWQydtm6JD33WWPATZUjdg"
+    },
     "readme": {
       "id": "v55OnYAiHYIthfjEW1QdlKzoYocqtCppTNCkkmZmLHE"
     },
     "latest": {
-      "id": "vZr5mq9AXHzE3vV3NpKPZUC-7xKbfwA5zJYBS2cgxY8"
+      "id": "qhrSoK5yEztzHYpEZnKgjqWQydtm6JD33WWPATZUjdg"
     },
     "vite.svg": {
       "id": "JI1vtONYd5AOoPGojbx6cIunUyILn8kjuFJP7uEDvwc"
@@ -48,10 +54,10 @@
       "id": "5y-AED1U9M52yyKB3cHhgQ08OkB1PqUgmB5FOQk7iXM"
     },
     "assets/index-535a2489.js": {
-      "id": "xsx5HAM6XzuI4FG9f4DSCN_BfC6GfKEPAujgVq5MjmA"
+      "id": "jiGGizc_q86M5e2EYB5DQWnt23MBkyVFbg0QdwHZOSU"
     },
     "manifest": {
-      "id": "sgrD0MnNtT8JkPV-a67TvAPg-Ix4go6Ux3756rWd1m0"
+      "id": "Rkcp13ma-D4FA8UhRzTUKXpMGWTEwCqmANonaXZSjbs"
     }
   }
 }
