@@ -14,7 +14,15 @@ The test wallet needs to have $U tokens: [Get U](https://getu.g8way.io)
 
 `PATH_TO_WALLET=<path/to/wallet.json> npm test`
 
-## Import Dependencies
+## Fact Markets
+
+The `facts-sdk` currently implements the Fact Markets of the Facts Protocol.
+
+1. Deploying Fact Markets (or Attaching)
+2. Buying and Selling Position Tokens
+3. Getting prices and balances
+
+### Import Dependencies
 
 ```js
 import { WarpFactory } from 'warp-contracts';
@@ -23,7 +31,7 @@ import { DeployPlugin } from 'warp-contracts-plugin-deploy';
 import { getPrice, getBalance, getSupply, buy, sell, attach, deploy } from '@facts-kit/facts-sdk-v2';
 ```
 
-## Get Price
+### Get Price
 
 Pass warp as a dependency.
 
@@ -54,7 +62,7 @@ Returns
   }
 }
 ```
-## Get Sell Price
+### Get Sell Price
 
 Pass warp as a dependency.
 
@@ -75,7 +83,7 @@ Returns
   "position": "string",
 }
 ```
-## Get Supply
+### Get Supply
 
 Pass warp as a dependency.
 
@@ -99,7 +107,7 @@ Returns
 }
 ```
 
-## Get Balance
+### Get Balance
 
 Pass warp as a dependency.
 
@@ -129,7 +137,7 @@ Returns
 }
 ```
 
-## Buy
+### Buy
 
 Pass `warp`, and `signer` as dependencies.
 
@@ -161,7 +169,7 @@ Returns
 }
 ```
 
-## Sell
+### Sell
 
 Pass `warp`, and `signer` as dependencies.
 
@@ -175,7 +183,7 @@ const tx = await sell({warp, signer: new InjectedArweaveSigner(window.arweaveWal
 
 Returns: `string` (tx id of the new fact market interaction)
 
-## Deploy
+### Deploy
 
 Pass `warp`, `signer`, `env`, and `deployPlugin` as dependencies.
 
@@ -201,7 +209,7 @@ const output = await deploy({
 
 Returns: `string` (the fact market contract id)
 
-## Attach
+### Attach
 
 Pass `warp`, `signer`, `env`, and `deployPlugin` as dependencies.
 
