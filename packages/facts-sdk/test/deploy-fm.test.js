@@ -13,9 +13,9 @@ const jwk = JSON.parse(
   fs.readFileSync(process.env["PATH_TO_WALLET"]).toString()
 );
 
-test.skip("deploy-fm", async () => {
+test("deploy-fm", async () => {
   const warp = getWarp();
-  const output = await deploy({
+  const tx = await deploy({
     warp,
     signer: new ArweaveSigner(jwk),
     deployPlugin: new DeployPlugin(),
@@ -32,6 +32,9 @@ test.skip("deploy-fm", async () => {
     data: "test fact market data",
     position: "support",
   });
+
+  console.log("Deployed Tx:", tx);
+  assert.is(tx.length, 43);
 });
 
 test.run();
