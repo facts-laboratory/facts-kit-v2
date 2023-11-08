@@ -1,4 +1,4 @@
-import { U_TX } from '../common/constants.js';
+import { U_TX } from "../common/constants.js";
 
 /**
  *
@@ -14,8 +14,6 @@ import { U_TX } from '../common/constants.js';
 export const allowU = async (tx, result, dre, warp, signer) => {
   const { price, fee } = result;
 
-  console.log('INPUTS', dre, price, fee, tx, signer);
-
   const contract = warp
     .contract(U_TX)
     .setEvaluationOptions({
@@ -23,17 +21,16 @@ export const allowU = async (tx, result, dre, warp, signer) => {
       remoteStateSyncEnabled: true,
       internalWrites: true,
       allowBigInt: true,
-      unsafeClient: 'skip',
+      unsafeClient: "skip",
     })
     .connect(signer);
 
-  console.log('CONTRACT SETUP', contract);
+  console.log("CONTRACT SETUP", contract);
   const interaction = await contract.writeInteraction({
-    function: 'allow',
+    function: "allow",
     target: tx,
     qty: price + fee,
   });
 
-  console.log('DONE!', interaction);
   return { allowTx: interaction.originalTxId, result, dre };
 };

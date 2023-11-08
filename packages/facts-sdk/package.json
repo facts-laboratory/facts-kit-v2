@@ -1,6 +1,6 @@
 {
   "name": "@facts-kit/facts-sdk-v2",
-  "version": "0.3.15",
+  "version": "0.4.0",
   "description": "JS Implementation of the Facts Protocol",
   "main": "main.js",
   "types": "main.d.ts",
@@ -9,24 +9,22 @@
     "test": "uvu test",
     "build:types": "tsc",
     "build:src": "esbuild src/main.js --platform=node --format=esm --bundle --outdir=dist",
-    "build": "rm -r dist; npm run build:types && npm run build:src && cp package.json dist/package.json",
-    "pub": "npm run build && (cd dist && npm publish --access public)",
-    "perma-pub": "node ./scripts/perma-pub.mjs ./dist/facts-kit-facts-sdk-v2-0.3.15.tgz",
-    "packajs": "packajs pubjs -w ${PATH_TO_WALLET} --arns",
-    "pub:file": "bundlr upload ${FILE} -h http://node2.bundlr.network -w ${PATH_TO_WALLET} -c arweave",
-    "init": "packajs init"
+    "build": "rm -r dist; npm run build:types && npm run build:src && cp package.json dist/package.json && (cd dist && npm pack)",
+    "packajs-pubjs": "npm run build && node ../packajs/dist/cli.js pubjs -w ${PATH_TO_WALLET} --arns",
+    "packajs-version": "packajs -V",
+    "pub:file": "bundlr upload ${FILE} -h http://node2.bundlr.network -t Type=perma-package -t Title=Facts-SDK -t Description=\"Javascript Implementation of the Facts Protocol\" -t Read-Me=https://github.com/facts-laboratory/facts-kit-v2/blob/main/packages/facts-sdk/README.md -t Repository=https://github.com/facts-laboratory/facts-kit-v2/tree/main/packages/facts-sdk -t Render-With=jkPpggGUW-ofqKKYzG4Al8luFwNURoqXkpLFjqmiS58 -w ${PATH_TO_WALLET} -c arweave"
   },
   "author": "jshaw-ar",
   "license": "ISC",
   "devDependencies": {
     "@bundlr-network/client": "0.11.9",
-    "@facts-kit/packajs": "https://arweave.net/W_y4-EAlTUvFZ4krCdqaEHtUB9786bJK12XjG0pA1c4/latest",
+    "@facts-kit/packajs": "https://5qnrkui54q7ktnymaiiewweipwaiklum3nbgtisppmaohuw7dz3q.arweave.net/7BsVUR3kPqm3DAIQS1iIfYCFLozbQmmiT3sA49LfHnc/latest",
     "@types/node": "20.4.0",
     "esbuild": "0.18.11",
     "typescript": "5.1.6",
     "uvu": "0.5.6",
-    "warp-contracts": "1.4.14",
-    "warp-contracts-plugin-deploy": "1.0.9"
+    "warp-contracts": "1.4.22",
+    "warp-contracts-plugin-deploy": "1.0.10"
   },
   "private": false
 }

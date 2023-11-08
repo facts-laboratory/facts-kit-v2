@@ -11,11 +11,14 @@
     "0.3.15": {
       "id": "LlmooAehzjTQEjgF3FkAkKoZncEZN0QzSs0wpDNhyS4"
     },
+    "0.4.0": {
+      "id": "IZsxC2OzhKZt-d2gA3Wd49BaSKi-KPqXxm3BtLMdXFI"
+    },
     "readme": {
-      "id": "C6_xylrHeW10oBbVnITg7MkmbigHnwdjEdtiybv44do"
+      "id": "O82bIHYzws3_cYiGY91ovoUKfXcrr3-WU3xyCBuNqiQ"
     },
     "latest": {
-      "id": "LlmooAehzjTQEjgF3FkAkKoZncEZN0QzSs0wpDNhyS4"
+      "id": "IZsxC2OzhKZt-d2gA3Wd49BaSKi-KPqXxm3BtLMdXFI"
     },
     "vite.svg": {
       "id": "JI1vtONYd5AOoPGojbx6cIunUyILn8kjuFJP7uEDvwc"
@@ -27,10 +30,10 @@
       "id": "5y-AED1U9M52yyKB3cHhgQ08OkB1PqUgmB5FOQk7iXM"
     },
     "assets/index-535a2489.js": {
-      "id": "PHn7P71WDbrsbUHVy6NU0Nr1W-yYgS5z8rIaH87m5Ew"
+      "id": "OqxKLndDTh8DYf1bTsnBeZVrO1dam8Eai_pBKCHkqvo"
     },
     "manifest": {
-      "id": "x04v34At9NF1FI0YotJD_weHyLpEacpmYqzHKCliP2s"
+      "id": "TNi2KhovxyRrTVOujcKGUG5UBE1P65k2w0cx22nPWGc"
     }
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@facts-kit/packajs",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "description": "A package manager for the permaweb.",
   "main": "cli.js",
   "types": "cli.d.ts",
@@ -14,7 +14,7 @@
     "build": "rm -r dist; npm run build:src && cp package.json dist/package.json && (cd dist && npm pack)",
     "pub": "npm run build && (cd dist && npm publish --access public)",
     "pub:file": "bundlr upload ${FILE} -h http://node2.bundlr.network -w ${PATH_TO_WALLET} -c arweave",
-    "perma-pub": "npm run build && node src/cli.js pubjs -t Type=perma-package -t Title=PackaJS -t Description=\"Publish js packages to the permaweb. Forever.\" -t Read-Me=https://github.com/facts-laboratory/facts-kit-v2/blob/main/packages/packajs/README.md -t Repository=https://github.com/facts-laboratory/facts-kit-v2/tree/main/packages/packajs -t Render-With=jkPpggGUW-ofqKKYzG4Al8luFwNURoqXkpLFjqmiS58 -w ${PATH_TO_WALLET} --arns"
+    "perma-pub": "npm run build && node dist/cli.js pubjs -t Type=perma-package -t Title=PackaJS -t Description=\"Publish js packages to the permaweb. Forever.\" -t Read-Me=https://github.com/facts-laboratory/facts-kit-v2/blob/main/packages/packajs/README.md -t Repository=https://github.com/facts-laboratory/facts-kit-v2/tree/main/packages/packajs -t Render-With=jkPpggGUW-ofqKKYzG4Al8luFwNURoqXkpLFjqmiS58 -w ${PATH_TO_WALLET} --arns"
   },
   "author": "jshaw-ar",
   "license": "ISC",

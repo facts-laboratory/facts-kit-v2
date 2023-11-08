@@ -2,11 +2,17 @@
 
 <img src="https://oqfrmvvkx6kfvhswy45wpmpppwjwd6seafaaehb2tmb47i2bgpgq.arweave.net/dAsWVqq_lFqeVsc7Z7HvfZNh-kQBQAIcOpsDz6NBM80"  width="100">
 
-The javascript implementation of the Facts Protocol.
+The javascript implementation of the Facts Protocol. https://facts-sdk-js.ar-io.dev
 
 ## Install
 
-`npm i https://facts-sdk-js.arweave.dev/latest warp-contracts@1.4.14 warp-contracts-plugin-deploy@1.0.9 warp-contracts-plugin-signature@1.0.14`
+`npm i https://facts-sdk-js.arweave.dev/latest warp-contracts@1.4.22 warp-contracts-plugin-deploy@1.0.10 warp-contracts-plugin-signature@1.0.14`
+
+## Test
+
+The test wallet needs to have $U tokens: [Get U](https://getu.g8way.io)
+
+`PATH_TO_WALLET=<path/to/wallet.json> npm test`
 
 ## Import Dependencies
 

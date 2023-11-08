@@ -11,15 +11,15 @@ const jwk = JSON.parse(
   fs.readFileSync(process.env["PATH_TO_WALLET"]).toString()
 );
 
-test.skip("buy", async () => {
+test("buy", async () => {
   const warp = getWarp();
   await buy({ warp, signer: jwk })({
     qty: 1,
-    tx: "pMcG0SxcxscxFpRoB4ywsiU8ut1qSwGKgrPpYGjv-OU",
+    tx: "2xzmM89Umo7haVsXnScXXssYJEeI0NEH6HTv4Rhy79I",
     position: "oppose",
   });
   const read = await warp
-    .contract("pMcG0SxcxscxFpRoB4ywsiU8ut1qSwGKgrPpYGjv-OU")
+    .contract("2xzmM89Umo7haVsXnScXXssYJEeI0NEH6HTv4Rhy79I")
     .setEvaluationOptions({
       remoteStateSyncSource: `https://dre-u.warp.cc/contract`,
       remoteStateSyncEnabled: true,
