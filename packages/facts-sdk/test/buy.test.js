@@ -13,13 +13,15 @@ const jwk = JSON.parse(
 
 test("buy", async () => {
   const warp = getWarp();
-  await buy({ warp, signer: jwk })({
+  const output = await buy({ warp, signer: jwk })({
     qty: 1,
-    tx: "2xzmM89Umo7haVsXnScXXssYJEeI0NEH6HTv4Rhy79I",
+    tx: "AFQUFXtuBErDCaE4dMfuLXXESPjhMUuGyreGfZORUtA",
     position: "oppose",
   });
+
+  console.log("OUTPUT", output);
   const read = await warp
-    .contract("2xzmM89Umo7haVsXnScXXssYJEeI0NEH6HTv4Rhy79I")
+    .contract("AFQUFXtuBErDCaE4dMfuLXXESPjhMUuGyreGfZORUtA")
     .setEvaluationOptions({
       remoteStateSyncSource: `https://dre-u.warp.cc/contract`,
       remoteStateSyncEnabled: true,
@@ -30,7 +32,7 @@ test("buy", async () => {
     .readState();
 
   const state = await read.cachedValue.state;
-  console.log("State", state);
+  // console.log("State", state);
   assert.is(Number.isInteger(state.creator_cut), true);
 });
 

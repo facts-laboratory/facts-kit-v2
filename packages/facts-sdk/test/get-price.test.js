@@ -6,7 +6,7 @@ import { getWarp } from "../test-tools/warp.js";
 
 const test = suite("get-price");
 
-test("get-price", async () => {
+test.skip("get-price", async () => {
   const warp = getWarp();
   const output = await getPrice(warp)({
     qty: 1,

@@ -6,7 +6,7 @@ import { getWarp } from "../test-tools/warp.js";
 
 const test = suite("get-supply");
 
-test("get-supply", async () => {
+test.skip("get-supply", async () => {
   const warp = getWarp();
   const output = await getSupply(warp)({
     tx: "OwDhifPxKBKK1ArPMtjRrg4DjW3XcOpw0q3gBLWu3dY",

@@ -22,9 +22,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-# **/*/cache
-cache/
-packages/facts-sdk/sample-app/dist-manifest.csv
-packages/facts-sdk/sample-app/dist-id.txt
-packages/facts-sdk/sample-app/dist-manifest.json

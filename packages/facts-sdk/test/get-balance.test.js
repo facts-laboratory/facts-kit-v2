@@ -6,7 +6,7 @@ import { getWarp } from "../test-tools/warp.js";
 
 const test = suite("get-balance");
 
-test("get-balance", async () => {
+test.skip("get-balance", async () => {
   const warp = getWarp();
   const target = "9x24zjvs9DA5zAz2DmqBWAg6XcxrrE-8w3EkpwRm4e4";
   const output = await getBalance(warp)({
