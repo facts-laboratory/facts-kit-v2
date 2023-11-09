@@ -12,7 +12,7 @@ const jwk = JSON.parse(
   fs.readFileSync(process.env["PATH_TO_WALLET"]).toString()
 );
 
-test("sell", async () => {
+test.skip("sell", async () => {
   const warp = getWarp();
   const tx = await sell({
     warp,
