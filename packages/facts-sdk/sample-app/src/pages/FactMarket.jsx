@@ -106,6 +106,7 @@ const FactMarket = ({ tx, goToHome, goToFactMarket }) => {
                   "DISPATCH",
                   "ACCESS_PUBLIC_KEY",
                   "SIGNATURE",
+                  "SIGN_TRANSACTION",
                 ],
                 { name: "Fact Market Example" }
               );

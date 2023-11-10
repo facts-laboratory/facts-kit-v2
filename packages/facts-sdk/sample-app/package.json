@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "deploy": "rm dist-* && node ./scripts/perma-deploy.mjs ./dist"
+    "deploy": "rm dist-*; node ./scripts/perma-deploy.mjs ./dist"
   },
   "dependencies": {
     "@facts-kit/facts-sdk-v2": "https://facts-sdk-js.ar-io.dev/latest",
