@@ -1,7 +1,21 @@
-# vite-swc-reactjs-tailwind
+# Fact Market Sample App
 
-- `npm i`
-- `npm run dev`
-- `PATH_TO_WALLET=<path>/<file>.json npm run deploy`
-- Redux / Redux First Router
-- 
+A sample app that implements the Facts SDK.
+
+- deploy fact market
+- buy and sell position tokens
+
+## Usage
+
+Install deps:
+
+```zsh
+npm i
+```
+
+Run app:
+
+```zsh
+npm run dev
+```
+
