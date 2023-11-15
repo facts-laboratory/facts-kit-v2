@@ -6,7 +6,7 @@ import {
   DeployPlugin,
   InjectedArweaveSigner,
 } from "warp-contracts-plugin-deploy";
-import { deploy, buy, sell } from "@facts-kit/facts-sdk-v2";
+import { deploy, buy, sell, attach } from "@facts-kit/facts-sdk-v2";
 
 export const readState = async (tx, warp) => {
   try {
@@ -113,7 +113,7 @@ const FactMarket = ({ tx, goToHome, goToFactMarket }) => {
               const signer = new InjectedArweaveSigner(window.arweaveWallet);
               signer.getAddress = window.arweaveWallet.getActiveAddress;
 
-              deploy({
+              attach({
                 warp,
                 signer,
                 deployPlugin: new DeployPlugin(),
@@ -126,9 +126,9 @@ const FactMarket = ({ tx, goToHome, goToFactMarket }) => {
                   topics: [],
                 },
                 extraTags: [{ name: "Some", value: "Tag" }],
-                rebutTx: "test",
                 data: "test fact market data",
                 position: "support",
+                attachToTx: "00px2DCGkrfdXUwurg98ea3aHdvpyBGdbahV4v9xihU", // https://alex.arweave.dev/#/artifact/00px2DCGkrfdXUwurg98ea3aHdvpyBGdbahV4v9xihU
               })
                 .then((tx) => goToFactMarket(tx))
                 .catch((e) => {
