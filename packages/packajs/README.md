@@ -99,3 +99,6 @@ Go to your manifest `tx` to view the web app.
 
 1. A react app `packajs generate web`
 2. A react renderer/package (component that can be installed on your app `npm i <package>`) `packajs generate renderer`.
+3. `packajs generate arc-web`.
+
+If you'd like to submit your own generator, you can submit a PR and add it to the [config](./src/common/constants.js)
