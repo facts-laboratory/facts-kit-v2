@@ -16,7 +16,7 @@ import * as path from "path";
  * @param {string} options.folderName - The name of the directory being created.
  * @throws {Error} Throws an error if there is a problem with the HTTP request, file operations, or extraction.
  */
-export function web({ promises, tx, folderName }) {
+export function arc({ promises, tx, folderName }) {
   /**
    * Sets the ant.tx in the config.
    */

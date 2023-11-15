@@ -1,6 +1,6 @@
 {
   "name": "@facts-kit/packajs",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "A package manager for the permaweb.",
   "main": "cli.js",
   "types": "cli.d.ts",
