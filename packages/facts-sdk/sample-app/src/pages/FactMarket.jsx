@@ -6,7 +6,7 @@ import {
   DeployPlugin,
   InjectedArweaveSigner,
 } from "warp-contracts-plugin-deploy";
-import { deploy, buy, sell, attach } from "@facts-kit/facts-sdk-v2";
+import { /*deploy, */ buy, sell, attach } from "@facts-kit/facts-sdk-v2";
 
 export const readState = async (tx, warp) => {
   try {
