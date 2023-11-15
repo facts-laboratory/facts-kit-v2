@@ -15,6 +15,8 @@ import { setAnt } from "./api/config/set-ant.js";
 import { setTx, upload } from "./api/config/readme.js";
 import { web } from "./api/generate/web.js";
 import { renderer } from "./api/generate/renderer.js";
+import { arc } from "./api/generate/arc.js";
+import { GENERATORS } from "./common/constants.js";
 process.env.NO_WARNINGS = "experimental";
 
 program.version(packageJson.version);
@@ -203,16 +205,34 @@ config
 
 const generate = program.command("generate");
 
+// <generators-start>
 generate
-  .command("web")
-  .description(
-    "Generates a reactjs permaweb app with redux, tailwind, redux first router."
-  )
-  .action(() => web({ promises: fs.promises })());
+  .command(`${GENERATORS.JSHAW.WEB.command} <folderName>`)
+  .description(GENERATORS.JSHAW.WEB.description)
+  .action((folderName) => {
+    return web({
+      promises: fs.promises,
+      tx: GENERATORS.JSHAW.WEB.tx,
+      folderName,
+    })();
+  });
 
 generate
-  .command("renderer")
-  .description("Generates a reactjs renderer with cosmos react.")
-  .action(() => renderer({ promises: fs.promises })());
+  .command(`${GENERATORS.JSHAW.RENDERER.command} <folderName>`)
+  .description(GENERATORS.JSHAW.RENDERER.description)
+  .action((folderName) =>
+    renderer({
+      promises: fs.promises,
+      tx: GENERATORS.JSHAW.RENDERER.tx,
+      folderName,
+    })()
+  );
 
+generate
+  .command(`${GENERATORS.ALEX.ARC_WEB.command} <folderName>`)
+  .description(GENERATORS.ALEX.ARC_WEB.description)
+  .action((folderName) =>
+    arc({ promises: fs.promises, tx: GENERATORS.ALEX.ARC_WEB.tx, folderName })()
+  );
+// <generators-end>
 program.parse(process.argv);
